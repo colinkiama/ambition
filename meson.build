@@ -10,5 +10,5 @@ dependencies = [
     dependency('json-glib-1.0'),
     dependency('gmodule-2.0'),
     dependency('libsoup-2.4'),
-    dependency('log4vala-0.1'),
+    dependency('log4vala-0.2'),
 ]
