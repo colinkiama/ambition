@@ -3,10 +3,16 @@ sources = files (
     'Shell.vala',
 )
 
+bin_deps = [
+    dependency('readline')
+]
+
 vala_lint = executable (
     meson.project_name(),
-    sorces,
+    sources,
     dependencies: [
-        dependencies
-    ]
+        core_deps,
+        bin_deps,
+    ],
+    vala_args: '--thread'
 )

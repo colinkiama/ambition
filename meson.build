@@ -3,7 +3,7 @@ project(
     version: '0.1',
 )
 
-dependencies = [
+core_deps = [
     dependency('glib-2.0', version: '>=2.32'),
     dependency('gee-0.8'),
     dependency('gio-2.0'),
@@ -12,3 +12,5 @@ dependencies = [
     dependency('libsoup-2.4'),
     dependency('log4vala-0.2'),
 ]
+
+subdir('src')
