@@ -13,7 +13,19 @@ core_deps = [
     dependency('log4vala-0.2'),
 ]
 
+PKG_CONFIG_DEPS = [
+    'glib-2.0',
+    'gee-0.8'
+    'gio-2.0'
+    'json-glib-1.0'
+    'gmodule-2.0'
+    'libsoup-2.4'
+    'log4vala-0.2'
+]
+
 vapi_dir = join_paths (get_option('datadir'), 'vala', 'vapi')
+
+g_ir_compiler = find_program('g-ir-compiler', required: false)
 
 subdir('lib')
 subdir('src')

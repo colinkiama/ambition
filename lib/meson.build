@@ -103,13 +103,63 @@ libambition = shared_library (
     vala_header: lib_name + '.h',
     vala_vapi: lib_name + '.vapi',
     vala_args: [
-        '--abi-stability'
+        '--abi-stability'-
     ],
     install: true,
     install_dir: [
         true,
-        get_option('includedir') / lib_name + '-' + meson.project_name(),
-        vapi_dir
+        get_option('includedir') / lib_name / meson.project_name(),
+        vapi_dir,
+        g_ir_compiler.found()
     ]
-
 )
+
+if g_ir_compiler.found()
+    custom_target(
+        lib_name + '-typelib',
+        command: [
+            g_ir_compiler,
+            '--shared-library', lib_name + '.so',
+            '--output', '@OUTPUT@',
+            meson.current_build_dir() / lib_name + '.gir'
+        ],
+        output: lib_name + '.typelib',
+        depends: lib_name,
+        install: true,
+        install_dir: join_paths(get_option('libdir'), 'girepository-1.0')
+    )
+endif
+
+pkgconfig.generate(
+    lib_name,
+    subdirs: lib_name,
+    version: meson.project_version(),
+    name: lib_name,
+    filebase: lib_name,
+    requires: PKG_CONFIG_DEPS,
+    description: 'Ambition Web Framework for Vala and/or GObject.'
+)
+
+if get_option('enable_valadoc')
+    valadoc = find_program('valadoc')
+    lib_docs = custom_target(
+        lib_name + '_apidocs',
+        input: lib_sources,
+        install: true,
+        install_dir: get_option('datadir') / 'devhelp' / 'books',
+        command: [
+            valadoc,
+            '-o', meson.current_build_dir() / lib_name,
+            '--doclet',
+            'devhelp',
+            '@INPUT@',
+            '--force'
+        ],
+        output: lib_name
+    )
+
+    install_subdir(
+        meson.current_build_dir() / lib_name / lib_name,
+        install_dir: get_option('datadir') / 'devhelp' / 'books'
+    )
+endif
