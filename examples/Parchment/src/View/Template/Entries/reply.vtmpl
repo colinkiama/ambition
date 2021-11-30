@@ -1,5 +1,0 @@
-@parameters( Entry entry, int comment_id = 0, string reply_to = "", Form.Reply form )
-@using Parchment.Model.DB.Implementation
-@process( "Wrapper.header", entry.title )
-@process( "Entries.reply_component", entry, comment_id, reply_to, form )
-@process("Wrapper.footer")

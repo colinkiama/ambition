@@ -1,2 +1,0 @@
-@parameters( string content )
-@{content}

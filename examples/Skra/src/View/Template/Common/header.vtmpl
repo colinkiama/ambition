@@ -1,8 +1,0 @@
-@parameters( string node, bool exists, string subtitle )
-<html>
-<head>
-	<title>@{Ambition.Config.lookup_with_default( "wiki.name", "Skra Wiki" )} - @{subtitle}</title>
-	@{state.stash.get_string("head_markdown")}
-</head>
-<body>
-@{state.stash.get_string("header_markdown").replace( "|% loginbox %|", ( new Skra.View.Template.Common.loginbox() ).to_string_with_state(state) ).replace( "|% editbox %|", ( new Skra.View.Template.Common.editbox( exists, node ) ).to_string_with_state(state) ).replace( "|% breadcrumbs %|", ( new Skra.View.Template.Common.breadcrumbs( node ) ).to_string_with_state(state) )}

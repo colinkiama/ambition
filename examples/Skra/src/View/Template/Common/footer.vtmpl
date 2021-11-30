@@ -1,3 +1,0 @@
-@{state.stash.get_string("footer_markdown")}
-</body>
-</html>
