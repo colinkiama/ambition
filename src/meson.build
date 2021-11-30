@@ -4,7 +4,8 @@ sources = files (
 )
 
 bin_deps = [
-    dependency('readline')
+    dependency('readline'),
+    dependency('posix')
 ]
 
 vala_lint = executable (

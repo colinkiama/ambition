@@ -1,5 +1,5 @@
 project(
-    'Ambition','vala', 'c',
+    'Ambition', 'vala', 'c',
     version: '0.1',
 )
 
@@ -13,4 +13,7 @@ core_deps = [
     dependency('log4vala-0.2'),
 ]
 
+vapi_dir = join_paths (get_option('datadir'), 'vala', 'vapi')
+
+subdir('lib')
 subdir('src')
