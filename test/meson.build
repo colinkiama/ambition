@@ -28,10 +28,6 @@ test_sources = [
     'assets/formsubclass.vala'
 ]
 
-run_command('mkdir', meson.current_build_dir() / 'assets')
-run_command('cp', '-r', meson.current_source_dir() / 'assets' , meson.current_build_dir())
-run_command('cp', meson.current_source_dir() / 'CMakeLists.txt' , meson.current_build_dir())
-
 test(
     'tests',
     executable(
@@ -42,5 +38,6 @@ test(
             libambition_dep,
             posix_dep
         ]
-    )
+    ),
+    workdir: meson.current_source_dir()
 )
