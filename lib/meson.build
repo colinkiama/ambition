@@ -132,6 +132,8 @@ if g_ir_compiler.found()
     )
 endif
 
+
+
 pkgconfig.generate(
     libambition,
     subdirs: lib_name,
@@ -142,29 +144,40 @@ pkgconfig.generate(
     description: 'Ambition Web Framework for Vala and/or GObject.'
 )
 
-# if get_option('enable_valadoc')
-#     valadoc = find_program('valadoc')
-#     libambition_docs = custom_target(
-#         lib_name + '_apidocs',
-#         input: lib_sources,
-#         install: true,
-#         install_dir: get_option('datadir') / 'devhelp' / 'books',
-#         command: [
-#             valadoc,
-#             '-o', meson.current_build_dir() / lib_name,
-#             '--doclet',
-#             'devhelp',
-#             '@INPUT@',
-#             '--force'
-#         ],
-#         output: lib_name
-#     )
+pkg_flags = []
 
-#     install_subdir(
-#         meson.current_build_dir() / lib_name / lib_name,
-#         install_dir: get_option('datadir') / 'devhelp' / 'books'
-#     )
-# endif
+if get_option('enable_valadoc')
+    valadoc = find_program('valadoc')
+
+    valadoc_command = [
+        valadoc,
+        '-o', meson.current_build_dir() / lib_name,
+        '--doclet',
+        'devhelp',
+        '@INPUT@',
+        '--force',
+    ]
+
+    foreach pkg_dep : core_deps
+        valadoc_command += '--pkg=' + pkg_dep.name()
+    endforeach
+
+    valadoc_command += '--pkg=' + 'posix'
+
+    libambition_docs = custom_target(
+        lib_name + '_apidocs',
+        input: lib_sources,
+        install: true,
+        install_dir: get_option('datadir') / 'devhelp' / 'books',
+        command: valadoc_command,
+        output: lib_name
+    )
+
+    install_subdir(
+        meson.current_build_dir() / lib_name / lib_name,
+        install_dir: get_option('datadir') / 'devhelp' / 'books'
+    )
+endif
 
 libambition_dep = declare_dependency(
     dependencies: lib_deps,

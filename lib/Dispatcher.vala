@@ -293,7 +293,7 @@ namespace Ambition {
          * Inject a value into null properties corresponding to the given type.
          * @param search_type Type to inject
          * @param v Value to inject into property
-         * @returns true if a value was injected
+         * @return true if a value was injected
          */
         public bool inject_to_application ( Type search_type, Value v ) {
             bool injected = false;
