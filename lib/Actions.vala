@@ -30,7 +30,7 @@ namespace Ambition {
 		 * Return an array of Action objects to add to the dispatcher.
 		 * Override this method.
 		 */
-		public virtual Action[] actions() {
+		public virtual Action[] actions () {
 			return new Action[0];
 		}
 

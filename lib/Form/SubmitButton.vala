@@ -25,7 +25,7 @@ namespace Ambition.Form {
 	 * <button type="submit" />
 	 */
 	public class SubmitButton : Button {
-		public SubmitButton() {
+		public SubmitButton () {
 			this.input_type = "submit";
 		}
 	}

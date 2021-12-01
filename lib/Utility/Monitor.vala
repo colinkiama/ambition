@@ -29,59 +29,59 @@ namespace Ambition.Utility {
 	 */
 	public class Monitor : Object {
 #if !WIN32
-		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger("Ambition.Utility.Monitor");
+		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.Utility.Monitor");
 		private static const int timeout = 1000;
-		private HashMap<string,FileMonitorEvent> changed_files { get; set; default = new HashMap<string,FileMonitorEvent>(); }
+		private HashMap<string,FileMonitorEvent> changed_files { get; set; default = new HashMap<string,FileMonitorEvent> (); }
 		private ArrayList<FileMonitor> monitor_list = null;
 		private unowned Pid running_pid { get; set; }
 
-		public int run() {
-			var loop = new MainLoop();
+		public int run () {
+			var loop = new MainLoop ();
 
-			var project_dir = File.new_for_path(".");
+			var project_dir = File.new_for_path (".");
 			if (
-				!project_dir.query_exists()
-				|| project_dir.query_file_type(FileQueryInfoFlags.NONE) != FileType.DIRECTORY
+				!project_dir.query_exists ()
+				|| project_dir.query_file_type (FileQueryInfoFlags.NONE) != FileType.DIRECTORY
 			) {
-				logger.error("Somehow, we are not in a project directory.");
+				logger.error ("Somehow, we are not in a project directory.");
 			}
 
-			int return_type = build_and_run();
+			int return_type = build_and_run ();
 			if ( return_type != 0 ) {
 				return return_type;
 			}
 
-			var time = new TimeoutSource(timeout);
-			time.set_callback(() => {
+			var time = new TimeoutSource (timeout);
+			time.set_callback (() => {
 				if ( changed_files.size > 0 ) {
 					foreach ( string file in changed_files.keys ) {
-						logger.info( "File '%s' %s.".printf( file, changed_files[file].to_string().substring(21).down() ) );
+						logger.info ( "File '%s' %s.".printf(  file, changed_files[file].to_string( ).substring( 21).down( ) ) );
 					}
-					changed_files = new HashMap<string,FileMonitorEvent>();
-					build_and_run();
+					changed_files = new HashMap<string,FileMonitorEvent> ();
+					build_and_run ();
 				}
 				return true;
 			});
-			time.attach( loop.get_context() );
+			time.attach ( loop.get_context () );
 
-			loop.run();
+			loop.run ();
 			return 0;
 		}
 
-		private int build_monitors() {
-			monitor_list = new ArrayList<FileMonitor>();
+		private int build_monitors () {
+			monitor_list = new ArrayList<FileMonitor> ();
 			try {
-				ArrayList<string> directories = get_recursive_directories("src");
-				directories.add("src");
-				directories.add("config");
+				ArrayList<string> directories = get_recursive_directories ("src");
+				directories.add ("src");
+				directories.add ("config");
 				foreach ( string path in directories ) {
-					var dir_path = File.new_for_path(path);
-					var monitor = dir_path.monitor_directory( FileMonitorFlags.NONE );
-					monitor.changed.connect(on_file_change);
-					monitor_list.add(monitor);
+					var dir_path = File.new_for_path (path);
+					var monitor = dir_path.monitor_directory ( FileMonitorFlags.NONE );
+					monitor.changed.connect (on_file_change);
+					monitor_list.add (monitor);
 				}
 			} catch ( Error e ) {
-				logger.error( "Could not monitor directory", e );
+				logger.error ( "Could not monitor directory", e );
 				return 1;
 			}
 			return 0;
@@ -94,13 +94,13 @@ namespace Ambition.Utility {
 		 * @param other_file Reference file (optional)
 		 * @param event_type FileMonitor event type
 		 */
-		private void on_file_change( File file, File? other_file, FileMonitorEvent event_type ) {
+		private void on_file_change ( File file, File? other_file, FileMonitorEvent event_type ) {
 			if (
 				event_type == FileMonitorEvent.CREATED
 				|| event_type == FileMonitorEvent.CHANGED
 				|| event_type == FileMonitorEvent.DELETED
 			) {
-				changed_files[file.get_basename()] = event_type;
+				changed_files[file.get_basename ()] = event_type;
 			}
 		}
 
@@ -109,23 +109,23 @@ namespace Ambition.Utility {
 		 * @param path Start path to recurse from
 		 * @return ArrayList<string>
 		 */
-		private ArrayList<string> get_recursive_directories( string path ) {
-			var dirs = new ArrayList<string>();
+		private ArrayList<string> get_recursive_directories ( string path ) {
+			var dirs = new ArrayList<string> ();
 			try {
 				FileInfo file_info;
-				var directory = File.new_for_path(path);
-				var enumerator = directory.enumerate_children(
+				var directory = File.new_for_path (path);
+				var enumerator = directory.enumerate_children (
 					FileAttribute.STANDARD_NAME + "," + FileAttribute.STANDARD_TYPE, 0 );
 
-				while ( ( file_info = enumerator.next_file() ) != null ) {
-					if ( file_info.get_file_type() == FileType.DIRECTORY && !file_info.get_name().has_prefix(".") ) {
-						string full_path = path + "/" + file_info.get_name();
-						dirs.add(full_path);
-						dirs.add_all( get_recursive_directories(full_path) );
+				while ( ( file_info = enumerator.next_file () ) != null ) {
+					if ( file_info.get_file_type () == FileType.DIRECTORY && !file_info.get_name ().has_prefix (".") ) {
+						string full_path = path + "/" + file_info.get_name( );
+						dirs.add (full_path);
+						dirs.add_all ( get_recursive_directories (full_path) );
 					}
 				}
 			} catch (Error e) {
-				logger.error( e.message );
+				logger.error ( e.message );
 			}
 			return dirs;
 		}
@@ -133,65 +133,65 @@ namespace Ambition.Utility {
 		/**
 		 * Build and run current project.
 		 */
-		private int build_and_run() {
+		private int build_and_run () {
 			// Disconnect signals
 			if ( monitor_list != null ) {
 				foreach ( FileMonitor monitor in monitor_list ) {
-					monitor.cancel();
+					monitor.cancel ();
 				}
 			}
 
-			var build = new Build();
-			if ( build.setup_build_directory() != 0 ) {
-				re_monitor();
+			var build = new Build ();
+			if ( build.setup_build_directory () != 0 ) {
+				re_monitor ();
 				return -1;
 			}
-			if ( build.cmake_project() != 0 ) {
-				re_monitor();
+			if ( build.cmake_project () != 0 ) {
+				re_monitor ();
 				return -1;
 			}
-			if ( build.build_project() != 0 ) {
-				re_monitor();
+			if ( build.build_project () != 0 ) {
+				re_monitor ();
 				return -1;
 			}
 
 			if ( running_pid > 0 ) {
 				// Kill old process
-				Posix.kill( running_pid, Posix.SIGTERM );
+				Posix.kill(  running_pid, Posix.SIGTERM );
 			}
 			Pid pid;
-			var cur_dir = Environment.get_current_dir();
-			Environment.set_current_dir( cur_dir.substring( 0, cur_dir.length - 5 ) );
-			string application_name = get_application_name();
-			string[] args = { "%s/build/src/%s-bin".printf( Environment.get_current_dir(), application_name ) };
+			var cur_dir = Environment.get_current_dir ();
+			Environment.set_current_dir ( cur_dir.substring ( 0, cur_dir.length - 5 ) );
+			string application_name = get_application_name ();
+			string[] args = { "%s/build/src/%s-bin".printf(  Environment.get_current_dir( ), application_name ) };
 
 			// Build child environment
-			var env = new ArrayList<string>();
-			foreach ( string k in Environment.list_variables() ) {
+			var env = new ArrayList<string>( );
+			foreach ( string k in Environment.list_variables () ) {
 				if ( k != "_" ) {
-					env.add( "%s=%s".printf( k, Environment.get_variable(k) ) );
+					env.add ( "%s=%s".printf(  k, Environment.get_variable( k) ) );
 				}
 			}
-			env.add( "_=" + args[0] );
+			env.add ( "_=" + args[0] );
 
 			// Spawn webapp
 			try {
-				Process.spawn_async(
+				Process.spawn_async (
 					".",
 					args,
-					env.to_array(),
+					env.to_array (),
 					SpawnFlags.DO_NOT_REAP_CHILD,
 					null,
 					out pid
 				);
 			} catch (SpawnError wse) {
-				logger.error( "Unable to run web application", wse );
-				re_monitor();
+				logger.error ( "Unable to run web application", wse );
+				re_monitor ();
 				return 0;
 			}
 			this.running_pid = pid;
 
-			int retval = re_monitor();
+			int retval = re_monitor ();
 			if ( retval > 0 ) {
 				return retval;
 			}
@@ -199,11 +199,11 @@ namespace Ambition.Utility {
 			return 0;
 		}
 
-		private int re_monitor() {
+		private int re_monitor () {
 			// Reconnect signals
-			int return_type = build_monitors();
+			int return_type = build_monitors( );
 			if ( return_type > 0 ) {
-				Posix.kill( running_pid, Posix.SIGTERM );
+				Posix.kill ( running_pid, Posix.SIGTERM );
 				return return_type;
 			}
 			return 0;

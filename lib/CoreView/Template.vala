@@ -26,16 +26,16 @@ namespace Ambition.CoreView {
 	 * Returns a template.
 	 */
 	public abstract class Template : Result {
-		public override InputStream? render() {
-			string result = to_string();
+		public override InputStream? render () {
+			string result = to_string ();
 			size = result.length;
-			return new MemoryInputStream.from_data( result.data, GLib.g_free );
+			return new MemoryInputStream.from_data ( result.data, GLib.g_free );
 		}
 
 		/**
 		 * Render a template into a string.
 		 */
-		public abstract string to_string();
+		public abstract string to_string ();
 
 		/**
 		 * Render a template into a string, providing the current state. This
@@ -43,9 +43,9 @@ namespace Ambition.CoreView {
 		 * dispatch cycle.
 		 * @param state Valid State object.
 		 */
-		public string to_string_with_state( State state ) {
+		public string to_string_with_state ( State state ) {
 			this.state = state;
-			return to_string();
+			return to_string ();
 		}
 	}
 }

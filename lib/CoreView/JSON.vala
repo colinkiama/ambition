@@ -44,8 +44,8 @@ namespace Ambition.CoreView {
 		 * @param pretty Default false. When true, outputs in formatted,
 		 *               indented JSON.
 		 */
-		public JSON.with_object( Object object, bool convert_underlines = false, bool pretty = false ) throws Error {
-			this.node = Json.gobject_serialize(object);
+		public JSON.with_object ( Object object, bool convert_underlines = false, bool pretty = false ) throws Error {
+			this.node = Json.gobject_serialize (object);
 			this.pretty = pretty;
 		}
 
@@ -55,21 +55,21 @@ namespace Ambition.CoreView {
 		 * @param pretty Default false. When true, outputs in formatted,
 		 *               indented JSON.
 		 */
-		public JSON.with_node( Json.Node node, bool convert_underlines = false, bool pretty = false ) {
+		public JSON.with_node ( Json.Node node, bool convert_underlines = false, bool pretty = false ) {
 			this.node = node;
 			this.pretty = pretty;
 		}
 
-		public override InputStream? render() {
+		public override InputStream? render () {
 			size_t size = 0;
-			var generator = new Json.Generator();
+			var generator = new Json.Generator ();
 			generator.root = this.node;
 			generator.pretty = this.pretty;
-			string json_data = generator.to_data( out size );
+			string json_data = generator.to_data ( out size );
 
 			this.size = (int64) size;
 			state.response.content_type = "application/json";
-			return new MemoryInputStream.from_data( json_data.data, GLib.g_free );
+			return new MemoryInputStream.from_data ( json_data.data, GLib.g_free );
 		}
 	}
 }

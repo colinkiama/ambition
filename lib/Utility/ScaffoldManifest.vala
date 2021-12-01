@@ -40,14 +40,14 @@ namespace Ambition.Utility {
 		 * @param scaffold_directory Existing scaffold directory.
 		 * @return Instance of ScaffoldManifest or null.
 		 */
-		public static ScaffoldManifest? load_manifest( string scaffold_directory ) {
-			var parser = new Json.Parser();
+		public static ScaffoldManifest? load_manifest ( string scaffold_directory ) {
+			var parser = new Json.Parser ();
 			try {
-				if ( parser.load_from_file( "%s/manifest.json".printf(scaffold_directory) ) ) {
-					return (ScaffoldManifest) Json.gobject_deserialize( typeof(ScaffoldManifest), parser.get_root() );
+				if ( parser.load_from_file ( "%s/manifest.json".printf( scaffold_directory) ) ) {
+					return (ScaffoldManifest) Json.gobject_deserialize ( typeof (ScaffoldManifest), parser.get_root () );
 				}
 			} catch ( Error e ) {
-				Log4Vala.Logger.get_logger("Ambition.Utility.ScaffoldManifest").error( "Fatal: Unable to load manifest from '%s': %s".printf( scaffold_directory, e.message ) );
+				Log4Vala.Logger.get_logger ("Ambition.Utility.ScaffoldManifest").error(  "Fatal: Unable to load manifest from '%s': %s".printf(  scaffold_directory, e.message ) );
 			}
 			return null;
 		}

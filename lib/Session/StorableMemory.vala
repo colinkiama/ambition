@@ -29,18 +29,18 @@ namespace Ambition.Session {
 	 * dependency.
 	 */
 	public class StorableMemory : Object,IStorable {
-		private HashMap<string,Interface> sessions { get; set; default = new HashMap<string,Interface>(); }
+		private HashMap<string,Interface> sessions { get; set; default = new HashMap<string,Interface> (); }
 
-		public void store( string session_id, Interface i ) {
-			sessions.set( session_id, i );
+		public void store ( string session_id, Interface i ) {
+			sessions.set ( session_id, i );
 		}
 
-		public Interface? retrieve( string session_id ) {
-			if ( sessions.has_key(session_id) ) {
-				return sessions.get(session_id);
+		public Interface? retrieve ( string session_id ) {
+			if ( sessions.has_key (session_id) ) {
+				return sessions.get (session_id);
 			}
 
-			Log4Vala.Logger.get_logger("Ambition.Session.StorableMemory").info("Session not found");
+			Log4Vala.Logger.get_logger ("Ambition.Session.StorableMemory").info( "Session not found");
 			return null;
 		}
 	}

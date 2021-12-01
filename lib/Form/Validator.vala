@@ -32,7 +32,7 @@ namespace Ambition.Form {
 		 * @param max_length Max length of field
 		 * @return boolean
 		 */
-		public static bool max_length( string value, int max_length ) {
+		public static bool max_length ( string value, int max_length ) {
 			return ( value.length <= max_length ? true : false );
 		}
 
@@ -42,7 +42,7 @@ namespace Ambition.Form {
 		 * @param min_length Min length of field
 		 * @return boolean
 		 */
-		public static bool min_length( string value, int min_length ) {
+		public static bool min_length ( string value, int min_length ) {
 			return ( value.length >= min_length ? true : false );
 		}
 
@@ -51,8 +51,8 @@ namespace Ambition.Form {
 		 * @param value      String field value
 		 * @return boolean
 		 */
-		public static bool is_numeric( string value ) {
-			return ( /^\-?[\d\.]+$/.match(value) && value.index_of(".") == value.last_index_of(".") ? true : false );
+		public static bool is_numeric ( string value ) {
+			return ( /^\-?[\d\.]+$/.match (value) && value.index_of (".") == value.last_index_of( ".") ? true : false );
 		}
 
 		/**
@@ -60,7 +60,7 @@ namespace Ambition.Form {
 		 * @param value String field value
 		 * @return boolean
 		 */
-		public static bool has_value( string? value ) {
+		public static bool has_value ( string? value ) {
 			return ( value != null && value.length > 0 );
 		}
 
@@ -71,8 +71,8 @@ namespace Ambition.Form {
 		 * @param value String field value
 		 * @return boolean
 		 */
-		public static bool is_email_address( string? value ) {
-			return /^.+\@.+\..+$/.match(value);
+		public static bool is_email_address ( string? value ) {
+			return /^.+\@.+\..+$/.match (value);
 		}
 
 	}

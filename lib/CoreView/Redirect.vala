@@ -37,14 +37,14 @@ namespace Ambition.CoreView {
 		 * @param url Full or partial URL to redirect to.
 		 * @param code Optional status code to provide to the browser.
 		 */
-		public Redirect( string url, int code = 0 ) {
+		public Redirect ( string url, int code = 0 ) {
 			this.url = url;
 			this.code = code;
 		}
 
-		public override InputStream? render() {
-			state.response.done();
-			state.response.redirect(url);
+		public override InputStream? render () {
+			state.response.done ();
+			state.response.redirect (url);
 			if ( code > 0 ) {
 				state.response.status = code;
 			}

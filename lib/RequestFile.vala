@@ -41,7 +41,7 @@ namespace Ambition {
 		/**
 		 * Default constructor.
 		 */
-		public RequestFile() {}
+		public RequestFile () {}
 
 		/**
 		 * Construct RequestFile with contents of the object.
@@ -49,7 +49,7 @@ namespace Ambition {
 		 * @param content_type Content type
 		 * @param file Valid File object
 		 */
-		public RequestFile.with_contents( string filename, string content_type, File file ) {
+		public RequestFile.with_contents ( string filename, string content_type, File file ) {
 			this.filename = filename;
 			this.content_type = content_type;
 			this.file = file;

@@ -35,46 +35,46 @@ namespace Ambition.Authorization.PasswordType {
 	public abstract class Hashed : Object,IPasswordType {
 		protected HashMap<string,string> config { get; set; }
 
-		public void init( HashMap<string,string> config ) {
+		public void init ( HashMap<string,string> config ) {
 			this.config = config;
 		}
 
-		public string convert( string password_value, HashMap<string,string>? options = null ) {
-			var buffer = new StringBuilder();
+		public string convert ( string password_value, HashMap<string,string>? options = null ) {
+			var buffer = new StringBuilder ();
 
 			bool has_options = ( options != null );
 
 			// Pre-salt
 			if ( has_options && options["pre_salt"] != null ) {
-				buffer.append( options["pre_salt"] );
+				buffer.append ( options["pre_salt"] );
 			} else if ( config["pre_salt"] != null ) {
-				buffer.append( config["pre_salt"] );
+				buffer.append ( config["pre_salt"] );
 			}
 
-			buffer.append(password_value);
+			buffer.append (password_value);
 
 			// Post-salt
 			if ( has_options && options["post_salt"] != null ) {
-				buffer.append( options["post_salt"] );
+				buffer.append ( options["post_salt"] );
 			} else if ( config["post_salt"] != null ) {
-				buffer.append( config["post_salt"] );
+				buffer.append ( config["post_salt"] );
 			}
 
 			// Iterations
 			int iterations = 1;
 			if ( has_options && options["iterations"] != null ) {
-				iterations = int.parse( options["iterations"] );
+				iterations = int.parse ( options["iterations"] );
 			} else if ( config["iterations"] != null ) {
-				iterations = int.parse( config["iterations"] );
+				iterations = int.parse ( config["iterations"] );
 			}
 			string result = buffer.str;
 			for ( int index = 0; index < iterations; index++ ) {
-				result = hash(result);
+				result = hash (result);
 			}
 
 			return result;
 		}
 
-		protected abstract string hash( string incoming );
+		protected abstract string hash ( string incoming );
 	}
 }

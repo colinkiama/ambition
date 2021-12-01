@@ -28,7 +28,7 @@ namespace Ambition.Plugin {
 		public string version { get; set; }
 		public string description { get; set; }
 
-		public PluginResult( string name, string version, string description ) {
+		public PluginResult ( string name, string version, string description ) {
 			this.name = name;
 			this.version = version;
 			this.description = description;

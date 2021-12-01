@@ -25,8 +25,8 @@ namespace Ambition.Form {
 	 * <input type="checkbox" />
 	 */
 	public class CheckboxGroupInput : GroupInput {
-		public CheckboxGroupInput.with_options( string[] values, string[] labels ) {
-			base.with_options( values, labels );
+		public CheckboxGroupInput.with_options ( string[] values, string[] labels ) {
+			base.with_options ( values, labels );
 			this.input_type = "checkbox";
 		}
 	}

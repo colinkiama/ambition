@@ -31,7 +31,7 @@ namespace Ambition.Authorization {
 		 * Initialize password type with config
 		 * @param config Configuration HashMap
 		 */
-		public abstract void init( HashMap<string,string> config );
+		public abstract void init ( HashMap<string,string> config );
 
 		/**
 		 * Convert the given password value to the hashed, crypted, or other
@@ -39,6 +39,6 @@ namespace Ambition.Authorization {
 		 * @param password_value Value to convert
 		 * @param options Optional HashMap<string,string> of additional params.
 		 */
-		public abstract string convert( string password_value, HashMap<string,string>? options = null );
+		public abstract string convert ( string password_value, HashMap<string,string>? options = null );
 	}
 }

@@ -38,17 +38,17 @@ namespace Ambition.CoreView {
 		 * @param str String to return to the browser.
 		 * @param code Optional status code to provide to the browser.
 		 */
-		public RawString( string str, int code = 0 ) {
+		public RawString ( string str, int code = 0 ) {
 			this.renderable = str;
 			this.code = code;
 		}
 
-		public override InputStream? render() {
+		public override InputStream? render () {
 			size = renderable.length;
 			if ( state.response.content_type == null ) {
 				state.response.content_type = "text/html";
 			}
-			return new MemoryInputStream.from_data( renderable.data, GLib.g_free );
+			return new MemoryInputStream.from_data ( renderable.data, GLib.g_free );
 		}
 	}
 }

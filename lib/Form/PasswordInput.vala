@@ -25,7 +25,7 @@ namespace Ambition.Form {
 	 * <input type="password" />
 	 */
 	public class PasswordInput : TextInput {
-		public PasswordInput() {
+		public PasswordInput () {
 			this.input_type = "password";
 		}
 
@@ -33,8 +33,8 @@ namespace Ambition.Form {
 		 * Create a PasswordInput with a predefined class attribute.
 		 * @param class_attribute One or more classes
 		 */
-		public PasswordInput.with_class( string class_attribute ) {
-			this();
+		public PasswordInput.with_class ( string class_attribute ) {
+			this ();
 			this.class_attribute = class_attribute;
 		}
 	}

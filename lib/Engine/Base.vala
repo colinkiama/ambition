@@ -27,12 +27,12 @@ namespace Ambition.Engine {
 	 * Base class for an Engine implementation.
 	 */
 	public class Base : Component {
-		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger("Ambition.Engine.Base");
+		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.Engine.Base");
 
 		public virtual string name { get { return ""; } }
 
-		protected static HashMap<int,string> STATUS_TEXT = new HashMap<int,string>();
-		
+		protected static HashMap<int,string> STATUS_TEXT = new HashMap<int,string> ();
+
 		static construct {
 			STATUS_TEXT[100] = "Continue";
 			STATUS_TEXT[101] = "Switching Protocols";
@@ -75,7 +75,7 @@ namespace Ambition.Engine {
 			STATUS_TEXT[504] = "Gateway Timeout";
 			STATUS_TEXT[505] = "HTTP Version Not Supported";
 		}
-		
+
 		/**
 		  * every overriding engine MUST at the very least do the following.
 		
@@ -95,14 +95,14 @@ namespace Ambition.Engine {
 				// write body if necessary
 			}
 		 */
-		public virtual void execute() {}
-		
-		protected virtual void _after_request( State state ) {
-			hook_parse_request_cookies(state);
+		public virtual void execute () {}
+
+		protected virtual void _after_request ( State state ) {
+			hook_parse_request_cookies (state);
 		}
-		
-		protected virtual void _after_render( State state ) {
-			hook_set_cookies(state);
+
+		protected virtual void _after_render ( State state ) {
+			hook_set_cookies (state);
 		}
 
 		/**
@@ -110,20 +110,20 @@ namespace Ambition.Engine {
 		 * or provides file handles to uploads.
 		 * @param state State
 		 */
-		public virtual void hook_parse_request_body( State state, int content_length, DataInputStream stream ) {
+		public virtual void hook_parse_request_body ( State state, int content_length, DataInputStream stream ) {
 			if ( state.request.content_type != null && "multipart/form-data" in state.request.content_type ) {
-				mime_decode( state, stream );
+				mime_decode ( state, stream );
 			} else {
-				parse_form_data( state, content_length, stream );
+				parse_form_data ( state, content_length, stream );
 			}
 		}
 
-		private void parse_form_data( State state, int content_length, DataInputStream stream ) {
+		private void parse_form_data ( State state, int content_length, DataInputStream stream ) {
 			uint8[] post_data = new uint8[content_length];
 			uint32 index = 0;
 			uint8 c;
 			try {
-				while ( ( c = stream.read_byte(null) ) != 0 ) {
+				while ( ( c = stream.read_byte (null) ) != 0 ) {
 					if ( c == '\r' ) {
 						break;
 					}
@@ -137,17 +137,17 @@ namespace Ambition.Engine {
 				}
 			} catch (IOError e) {}
 			if ( index > 0 ) {
-				state.request.params.set_all( Request.params_from_string( (string) post_data ) );
+				state.request.params.set_all ( Request.params_from_string ( (string) post_data ) );
 				state.request.request_body = post_data;
 			}
 		}
 
-		private void mime_decode( State state, DataInputStream stream ) {
+		private void mime_decode ( State state, DataInputStream stream ) {
 			string boundary = null;
 			if ( "boundary=" in state.request.content_type ) {
 				MatchInfo info;
-				if ( /boundary="?(.*?)[" ;]?$/.match( state.request.content_type, 0, out info ) ) {
-					boundary = "--" + info.fetch(1);
+				if ( /boundary="?(.*?)[" ;]?$/.match(  state.request.content_type, 0, out info ) ) {
+					boundary = "--" + info.fetch( 1);
 				}
 			}
 
@@ -156,21 +156,21 @@ namespace Ambition.Engine {
 				while ( 1 == 1 ) {
 					size_t length;
 					try {
-						line = stream.read_upto( "\r", -1, out length, null );
-						var trash = stream.read_byte();
-						trash = stream.read_byte();
+						line = stream.read_upto ( "\r", -1, out length, null );
+						var trash = stream.read_byte ();
+						trash = stream.read_byte ();
 					} catch (IOError e) {}
 					if ( line == null ) {
 						break;
 					}
 					if ( boundary in line ) {
-						mime_parse_boundary( state, stream, boundary );
+						mime_parse_boundary ( state, stream, boundary );
 					}
 				}
 			}
 		}
 
-		private void mime_parse_boundary( State state, DataInputStream stream, string boundary ) {
+		private void mime_parse_boundary ( State state, DataInputStream stream, string boundary ) {
 			string line = "";
 			string content_disposition = null;
 			string name = null;
@@ -180,33 +180,33 @@ namespace Ambition.Engine {
 			while ( 1 == 1 ) {
 				size_t length;
 				try {
-					line = stream.read_upto( "\r", -1, out length, null );
+					line = stream.read_upto ( "\r", -1, out length, null );
 					// Skip CRLF
-					var trash = stream.read_byte();
-					trash = stream.read_byte();
+					var trash = stream.read_byte( );
+					trash = stream.read_byte ();
 				} catch (IOError e) {}
 				if ( line == null ) {
 					break;
 				}
-				var fline = line.chug();
+				var fline = line.chug ();
 				if ( fline == "" ) {
 					break;
 				}
-				string[] split = fline.split(": ");
-				switch( split[0] ) {
+				string[] split = fline.split (": ");
+				switch ( split[0] ) {
 					case "Content-Disposition":
-						string val = split[1].substring( 0, split[1].index_of(" ") ).replace( ";", "" ).replace( "\"", "" );
+						string val = split[1].substring ( 0, split[1].index_of (" ") ).replace(  ";", "" ).replace(  "\"", "" );
 						content_disposition = val;
 						MatchInfo info;
-						if ( /name="?(.*?)[" ;\b]/.match( split[1], 0, out info ) ) {
-							name = info.fetch(1);
+						if ( /name="?(.*?)[" ;\b]/.match(  split[1], 0, out info ) ) {
+							name = info.fetch (1);
 						}
-						if ( /filename="?(.*?)[" ;\b]/.match( split[1], 0, out info ) ) {
-							file_name = info.fetch(1);
+						if ( /filename="?(.*?)[" ;\b]/.match(  split[1], 0, out info ) ) {
+							file_name = info.fetch (1);
 						}
 						break;
 					case "Content-Type":
-						string val = split[1].substring( 0, split[1].index_of(" ") ).replace( ";", "" ).replace( "\"", "" );
+						string val = split[1].substring ( 0, split[1].index_of (" ") ).replace(  ";", "" ).replace(  "\"", "" );
 						content_type = val;
 						break;
 					case "Content-Transfer-Encoding":
@@ -216,38 +216,38 @@ namespace Ambition.Engine {
 			}
 			if ( content_disposition != null ) {
 				if ( content_disposition == "form-data" && ( file_name == null || file_name == "" ) ) {
-					parse_form_data( state, 16384, stream );
+					parse_form_data ( state, 16384, stream );
 				} else if ( file_name != null ) {
-					parse_file_data( state, stream, boundary, content_disposition, name, content_type, file_name, encoding );
+					parse_file_data ( state, stream, boundary, content_disposition, name, content_type, file_name, encoding );
 					// Manually kick off parser again, since parse_file_data ate the boundary.
 					try {
-						var trash = stream.read_byte();
+						var trash = stream.read_byte ();
 						if ( trash > 0 ) {}
-						mime_parse_boundary( state, stream, boundary );
+						mime_parse_boundary ( state, stream, boundary );
 					} catch (IOError e) {}
 				}
 			}
 		}
 
-		private void parse_file_data( State state, DataInputStream stream, string boundary, string content_disposition, string? name, string content_type, string file_name, string? encoding ) {
+		private void parse_file_data ( State state, DataInputStream stream, string boundary, string content_disposition, string? name, string content_type, string file_name, string? encoding ) {
 			uint8 c;
 			int read = 0;
 			bool ready = false;
-			string new_boundary = "\r\n%s".printf(boundary);
+			string new_boundary = "\r\n%s".printf( boundary);
 			int len = new_boundary.length;
 			uint8[] boundaryish = new uint8[len];
 			string req_file_name = ( name != null ? name : ( file_name != null ? file_name : "unknown" ) );
 			FileIOStream iostream;
-			File temp_file; 
+			File temp_file;
 			try {
-				temp_file = File.new_tmp( "amb-upload-XXXXXX.tmp", out iostream );
+				temp_file = File.new_tmp ( "amb-upload-XXXXXX.tmp", out iostream );
 			} catch (Error e) {
-				logger.error( "Cannot create temp file for incoming file", e );
+				logger.error ( "Cannot create temp file for incoming file", e );
 				return;
 			}
-			DataOutputStream dos = new DataOutputStream( iostream.output_stream );
+			DataOutputStream dos = new DataOutputStream ( iostream.output_stream );
 			try {
-				while ( ( c = stream.read_byte(null) ) != 0 ) {
+				while ( ( c = stream.read_byte (null) ) != 0 ) {
 					if ( (string) boundaryish == new_boundary ) {
 						break;
 					}
@@ -257,7 +257,7 @@ namespace Ambition.Engine {
 					 * fill it before outputting bytes to the output file.
 					 */
 					if ( ready ) {
-						dos.put_byte( boundaryish[0] );
+						dos.put_byte ( boundaryish[0] );
 					}
 					for ( var i = 1; i < len; i++ ) {
 						boundaryish[i - 1] = boundaryish[i];
@@ -273,7 +273,7 @@ namespace Ambition.Engine {
 					}
 				}
 			} catch (IOError e) {}
-			state.request.files[req_file_name] = new RequestFile.with_contents( file_name, content_type, temp_file );
+			state.request.files[req_file_name] = new RequestFile.with_contents ( file_name, content_type, temp_file );
 		}
 
 		/**
@@ -281,20 +281,20 @@ namespace Ambition.Engine {
 		 * object.
 		 * @param state State
 		 */
-		public virtual void hook_parse_request_cookies( State state ) {
-			string raw_cookie_list = state.request.header("HTTP_COOKIE");
+		public virtual void hook_parse_request_cookies ( State state ) {
+			string raw_cookie_list = state.request.header ("HTTP_COOKIE");
 			if ( raw_cookie_list == null ) {
-				raw_cookie_list = state.request.header("Cookie");
+				raw_cookie_list = state.request.header ("Cookie");
 			}
 
 			if ( raw_cookie_list != null ) {
-				string[] raw_cookies = raw_cookie_list.split("; ");
+				string[] raw_cookies = raw_cookie_list.split ("; ");
 				foreach ( string raw_cookie in raw_cookies ) {
-					string[] pair = raw_cookie.split("=");
-					var c = new Cookie();
+					string[] pair = raw_cookie.split ("=");
+					var c = new Cookie ();
 					c.name = pair[0];
 					c.value = pair[1];
-					state.request.set_cookie(c);
+					state.request.set_cookie (c);
 				}
 			}
 		}
@@ -304,18 +304,18 @@ namespace Ambition.Engine {
 		 * headers.
 		 * @param state State
 		 */
-		public virtual void hook_set_cookies( State state ) {
-			var sb = new StringBuilder();
+		public virtual void hook_set_cookies ( State state ) {
+			var sb = new StringBuilder ();
 			foreach ( Cookie cookie in state.response.cookies.values ) {
 				if ( sb.len > 0 ) {
-					sb.append("; ");
+					sb.append ("; ");
 				}
-				string? cookie_string = cookie.render();
+				string? cookie_string = cookie.render ();
 				if ( cookie_string != null ) {
-					sb.append(cookie_string);
+					sb.append (cookie_string);
 				}
 			}
-			state.response.set_header( "Set-Cookie", sb.str );
+			state.response.set_header ( "Set-Cookie", sb.str );
 		}
 	}
 }

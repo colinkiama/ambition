@@ -29,48 +29,48 @@ namespace Ambition.Form {
 	public class Textarea : FieldRenderer {
 		public string? class_attribute { get; set; }
 
-		public Textarea.with_class( string class_attribute ) {
+		public Textarea.with_class ( string class_attribute ) {
 			this.class_attribute = class_attribute;
 		}
 
-		public override string render( string form_name, string field, string? value = "", string? nick = null, string? blurb = null, string[]? errors = null ) {
-			string id = make_id( form_name, field );
-			var textarea_hm = new HashMap<string,string>();
-			textarea_hm.set( "id", id );
-			textarea_hm.set( "name", field );
+		public override string render ( string form_name, string field, string? value = "", string? nick = null, string? blurb = null, string[]? errors = null ) {
+			string id = make_id ( form_name, field );
+			var textarea_hm = new HashMap<string,string> ();
+			textarea_hm.set ( "id", id );
+			textarea_hm.set ( "name", field );
 			if ( this.class_attribute != null ) {
-				textarea_hm.set( "class", class_attribute );
+				textarea_hm.set ( "class", class_attribute );
 			}
 			string div_text = "";
 			if ( blurb != null && blurb != field ) {
-				var div_hm = new HashMap<string,string>();
-				div_hm.set( "class", "input_hint" );
-				div_hm.set( "id", id + "_hint" );
-				div_text = div( div_hm, blurb );
+				var div_hm = new HashMap<string,string> ();
+				div_hm.set ( "class", "input_hint" );
+				div_hm.set ( "id", id + "_hint" );
+				div_text = div ( div_hm, blurb );
 			}
 			if ( errors != null ) {
-				textarea_hm.set( "class", ( this.class_attribute != null ? this.class_attribute + " " : "" ) + "input_error" );
+				textarea_hm.set ( "class", ( this.class_attribute != null ? this.class_attribute + " " : "" ) + "input_error" );
 
-				var error_hm = new HashMap<string,string>();
-				error_hm.set( "class", "input_hint_error" );
+				var error_hm = new HashMap<string,string> ();
+				error_hm.set ( "class", "input_hint_error" );
 				foreach ( string error in errors ) {
-					div_text = div_text + div( error_hm, error );
+					div_text = div_text + div ( error_hm, error );
 				}
 			}
 			return (
 				nick != null && nick != field ?
-					dl(
+					dl (
 						null,
-						dt(
+						dt (
 							null,
-							label( id, nick )
+							label ( id, nick )
 						)
-						+ dd(
+						+ dd (
 							null,
-							textarea( textarea_hm, value ) + div_text
+							textarea ( textarea_hm, value ) + div_text
 						)
 					)
-					: textarea( textarea_hm, value ) + div_text
+					: textarea ( textarea_hm, value ) + div_text
 			);
 		}
 	}

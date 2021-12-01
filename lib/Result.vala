@@ -37,6 +37,6 @@ namespace Ambition {
 		/**
 		 * Render the current view as an InputStream.
 		 */
-		public abstract InputStream? render();
+		public abstract InputStream? render ();
 	}
 }

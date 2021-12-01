@@ -30,38 +30,38 @@ namespace Ambition.Session {
 		public string name { get { return "Session"; } }
 		private IStorable session_store { get; set; }
 
-		public static Type init_plugin() {
-			return typeof(SessionPlugin);
+		public static Type init_plugin () {
+			return typeof (SessionPlugin);
 		}
 
-		public void register_plugin() {
-			var tmp = typeof(StorableFile);
+		public void register_plugin () {
+			var tmp = typeof (StorableFile);
 			if ( tmp == 0 ) {}
 
 			// Try to get store
-			string store = Config.lookup("session.store");
+			string store = Config.lookup( "session.store");
 			if ( store != null ) {
-				string store_type = "AmbitionSession%s".printf(store);
-				Type t = Type.from_name(store_type);
+				string store_type = "AmbitionSession%s".printf( store);
+				Type t = Type.from_name (store_type);
 				if ( t > 0 ) {
-					this.session_store = (IStorable) Object.new(t);
+					this.session_store = (IStorable) Object.new (t);
 				} else {
-					Log4Vala.Logger.get_logger("Ambition.Session.SessionPlugin").error( "Invalid session.store specified: %s".printf(store) );
+					Log4Vala.Logger.get_logger ("Ambition.Session.SessionPlugin").error(  "Invalid session.store specified: %s".printf( store) );
 					return;
 				}
 			}
 		}
 
-		public void on_request_dispatch( State state ) {
-			initialize_session(state);
+		public void on_request_dispatch ( State state ) {
+			initialize_session (state);
 			if ( state.session != null && state.session.session_id != null ) {
-				Log4Vala.Logger.get_logger("Ambition.Session.SessionPlugin").debug( "Found session %s".printf( state.session.session_id ) );
+				Log4Vala.Logger.get_logger ("Ambition.Session.SessionPlugin").debug(  "Found session %s".printf(  state.session.session_id ) );
 			}
 		}
 
-		public void on_request_end( State state ) {
+		public void on_request_end ( State state ) {
 			if ( session_store != null && state.response.status >= 200 && state.response.status < 400 ) {
-				serialize_session(state);
+				serialize_session (state);
 			}
 		}
 
@@ -70,27 +70,27 @@ namespace Ambition.Session {
 		 * exists, is valid, and is in storage.
 		 * @param state State
 		 */
-		private void initialize_session( State state ) {
+		private void initialize_session ( State state ) {
 			if ( session_store != null ) {
-				string session_name = Config.lookup_with_default(
+				string session_name = Config.lookup_with_default (
 					"session.name", "session_id"
 				);
-				var cookie = state.request.get_cookie(session_name);
+				var cookie = state.request.get_cookie (session_name);
 				if ( cookie != null ) {
-					var session = session_store.retrieve( cookie.value );
+					var session = session_store.retrieve ( cookie.value );
 					if ( session != null ) {
 						state.session = session;
 
 						// Deserialize user from session
-						var user_string = session.get_value("_user");
+						var user_string = session.get_value( "_user");
 						if ( user_string != null ) {
-							state.authorization.authorize_previous(
-								session.get_value("_user_type"),
-								session.get_value("_user")
+							state.authorization.authorize_previous (
+								session.get_value ("_user_type"),
+								session.get_value ("_user")
 							);
 						}
 					} else {
-						state.session = new Session.Interface();
+						state.session = new Session.Interface ();
 					}
 				}
 			}
@@ -101,20 +101,20 @@ namespace Ambition.Session {
 		 * the active Storage, if session is not null and sessions are active.
 		 * @param state State
 		 */
-		private void serialize_session( State state ) {
+		private void serialize_session ( State state ) {
 			if ( state.session != null ) {
 				// Serialize user to session
 				if ( state.user != null ) {
-					state.session.set_value( "_user", state.user.serialize() );
-					state.session.set_value( "_user_type", state.user.authorizer_name );
+					state.session.set_value ( "_user", state.user.serialize( ) );
+					state.session.set_value ( "_user_type", state.user.authorizer_name );
 				}
 
 				if ( state.session.id != null ) {
 					// flush session
-					session_store.store( state.session.id, state.session );
+					session_store.store(  state.session.id, state.session );
 
 					// Create session cookie
-					generate_session_cookie(state);
+					generate_session_cookie( state);
 				}
 			}
 		}
@@ -123,19 +123,19 @@ namespace Ambition.Session {
 		 * Generate the session cookie.
 		 * @param state State
 		 */
-		private void generate_session_cookie( State state ) {
-			string session_name = Config.lookup_with_default(
+		private void generate_session_cookie ( State state ) {
+			string session_name = Config.lookup_with_default (
 				"session.name", "session_id"
 			);
-			int? expires = Config.lookup_int("session.expires");
+			int? expires = Config.lookup_int ("session.expires");
 			if ( expires == null ) {
 				expires = 0;
 			}
-			var c = new Cookie();
+			var c = new Cookie ();
 			c.name = session_name;
 			c.value = state.session.id;
 			c.max_age = expires;
-			state.response.set_cookie(c);
+			state.response.set_cookie (c);
 		}
 	}
 }

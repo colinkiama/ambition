@@ -52,8 +52,8 @@ namespace Ambition {
 				if ( value == 0 ) {
 					expires = null;
 				} else {
-					var newtime = new DateTime.now_utc().add_seconds(value);
-					expires = newtime.format("%a, %d %b %Y %H:%M:%S GMT");
+					var newtime = new DateTime.now_utc ().add_seconds (value);
+					expires = newtime.format ("%a, %d %b %Y %H:%M:%S GMT");
 				}
 				_max_age = value;
 			}
@@ -75,12 +75,12 @@ namespace Ambition {
 		 * by on-page JavaScript.
 		 */
 		public bool http_only { get; set; default = false; }
-		
+
 		/**
 		 * Return true if this instance has all the required fields for
 		 * rendering -- name, value, and expires or max_age.
 		 */
-		public bool is_valid() {
+		public bool is_valid () {
 			if ( name != null && value != null && ( expires != null || max_age > 0 ) ) {
 				return true;
 			}
@@ -90,26 +90,26 @@ namespace Ambition {
 		/**
 		 * Render this instance per RFC 2965 and/or 6265.
 		 */
-		public string? render() {
-			if ( !is_valid() ) {
+		public string? render () {
+			if ( !is_valid () ) {
 				return null;
 			}
-			var cookie_string = new StringBuilder();
-			cookie_string.append( "%s=%s; Path=%s".printf( name, value, path ) );
+			var cookie_string = new StringBuilder ();
+			cookie_string.append ( "%s=%s; Path=%s".printf(  name, value, path ) );
 			if ( expires != null ) {
-				cookie_string.append( "; Expires=%s".printf(expires) );
+				cookie_string.append ( "; Expires=%s".printf( expires) );
 			}
 			if ( max_age > 0 ) {
-				cookie_string.append( "; Max-Age=%d".printf(max_age) );
+				cookie_string.append ( "; Max-Age=%d".printf( max_age) );
 			}
 			if ( domain != null ) {
-				cookie_string.append( "; Domain=%s".printf(domain) );
+				cookie_string.append ( "; Domain=%s".printf( domain) );
 			}
 			if (secure) {
-				cookie_string.append("; Secure");
+				cookie_string.append ("; Secure");
 			}
 			if (http_only) {
-				cookie_string.append("; HttpOnly");
+				cookie_string.append ("; HttpOnly");
 			}
 
 			return cookie_string.str;

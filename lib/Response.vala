@@ -30,12 +30,12 @@ namespace Ambition {
 		/**
 		 * Additional dynamic headers to be sent in the HTTP response.
 		 */
-		public HashMap<string,string> headers { get; set; default = new HashMap<string,string>(); }
+		public HashMap<string,string> headers { get; set; default = new HashMap<string,string> (); }
 
 		/**
 		 * Additional dynamic cookies to be sent in the HTTP response.
 		 */
-		public HashMap<string,Cookie> cookies { get; set; default = new HashMap<string,Cookie>(); }
+		public HashMap<string,Cookie> cookies { get; set; default = new HashMap<string,Cookie> (); }
 
 		/**
 		 * HTTP status code, defaulting to 200.
@@ -77,24 +77,24 @@ namespace Ambition {
 		 * Get an existing response cookie by name.
 		 * @param name Name of the cookie.
 		 */
-		public Cookie get_cookie( string name ) {
-			return cookies.get(name);
+		public Cookie get_cookie ( string name ) {
+			return cookies.get (name);
 		}
 
 		/**
 		 * Create or replace a response cookie.
 		 * @param cookie Valid Cookie object.
 		 */
-		public void set_cookie( Cookie cookie ) {
-			cookies.set( cookie.name, cookie );
+		public void set_cookie ( Cookie cookie ) {
+			cookies.set ( cookie.name, cookie );
 		}
 
 		/**
 		 * Retrieve an existing header by name.
 		 * @param key Header name
 		 */
-		public string header( string key ) {
-			return headers.get(key);
+		public string header ( string key ) {
+			return headers.get (key);
 		}
 
 		/**
@@ -102,31 +102,31 @@ namespace Ambition {
 		 * @param key Header name
 		 * @param val Content of header.
 		 */
-		public void set_header( string key, string val ) {
-			headers.set( key, val );
+		public void set_header ( string key, string val ) {
+			headers.set ( key, val );
 		}
 
 		/**
 		 * Set response to redirect to another page
 		 * @param url URL to redirect to
 		 */
-		public void redirect( string url ) {
+		public void redirect ( string url ) {
 			this.status = 302;
 			this.body = "";
-			this.set_header( "Location", url );
+			this.set_header ( "Location", url );
 		}
 
 		/**
 		 * Halt execution after the current action.
 		 */
-		public void done() {
+		public void done () {
 			this._done = true;
 		}
 
 		/**
 		 * Determine if action.done been requested.
 		 */
-		public bool is_done() {
+		public bool is_done () {
 			return this._done;
 		}
 
@@ -135,13 +135,13 @@ namespace Ambition {
 		 * string.
 		 * @return InputStream
 		 */
-		public InputStream? get_body_data() {
+		public InputStream? get_body_data () {
 			if ( this.body_stream != null ) {
 				return this.body_stream;
 			} else if ( this.body_array != null && this.body_array.length > 0 ) {
-				return new MemoryInputStream.from_data( this.body_array, GLib.g_free );
+				return new MemoryInputStream.from_data ( this.body_array, GLib.g_free );
 			} else if ( this.body != null ) {
-				return new MemoryInputStream.from_data( this.body.data, GLib.g_free );
+				return new MemoryInputStream.from_data ( this.body.data, GLib.g_free );
 			}
 			return null;
 		}
@@ -151,7 +151,7 @@ namespace Ambition {
 		 * string.
 		 * @return int64
 		 */
-		public int64 get_body_length() {
+		public int64 get_body_length () {
 			if ( this.body_stream != null ) {
 				return this.body_stream_length;
 			} else if ( this.body_array != null && this.body_array.length > 0 ) {

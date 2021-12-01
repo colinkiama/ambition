@@ -32,10 +32,10 @@ namespace Ambition {
 		 * Get an Object.
 		 * @param key Key
 		 */
-		public Object? get_object( string key ) {
-			var v = this.get(key);
+		public Object? get_object ( string key ) {
+			var v = this.get (key);
 			if ( v != null ) {
-				return v.get_object();
+				return v.get_object ();
 			}
 			return null;
 		}
@@ -45,20 +45,20 @@ namespace Ambition {
 		 * @param key Key
 		 * @param v Object
 		 */
-		public void set_object( string key, Object v ) {
-			var val = Value( v.get_type() );
-			val.set_object(v);
-			this.set( key, val );
+		public void set_object ( string key, Object v ) {
+			var val = Value ( v.get_type () );
+			val.set_object (v);
+			this.set ( key, val );
 		}
 
 		/**
 		 * Get a string.
 		 * @param key Key
 		 */
-		public string? get_string( string key ) {
-			var v = this.get(key);
+		public string? get_string ( string key ) {
+			var v = this.get (key);
 			if ( v != null ) {
-				return v.get_string();
+				return v.get_string ();
 			}
 			return null;
 		}
@@ -68,20 +68,20 @@ namespace Ambition {
 		 * @param key Key
 		 * @param v string
 		 */
-		public void set_string( string key, string v ) {
-			var val = Value( typeof(string) );
-			val.set_string(v);
-			this.set( key, val );
+		public void set_string ( string key, string v ) {
+			var val = Value ( typeof (string) );
+			val.set_string (v);
+			this.set ( key, val );
 		}
 
 		/**
 		 * Get a boolean.
 		 * @param key Key
 		 */
-		public bool? get_boolean( string key ) {
-			var v = this.get(key);
+		public bool? get_boolean ( string key ) {
+			var v = this.get (key);
 			if ( v != null ) {
-				return v.get_boolean();
+				return v.get_boolean ();
 			}
 			return null;
 		}
@@ -91,20 +91,20 @@ namespace Ambition {
 		 * @param key Key
 		 * @param v boolean
 		 */
-		public void set_boolean( string key, bool v ) {
-			var val = Value( typeof(bool) );
-			val.set_boolean(v);
-			this.set( key, val );
+		public void set_boolean ( string key, bool v ) {
+			var val = Value ( typeof (bool) );
+			val.set_boolean (v);
+			this.set ( key, val );
 		}
 
 		/**
 		 * Get a float.
 		 * @param key Key
 		 */
-		public float? get_float( string key ) {
-			var v = this.get(key);
+		public float? get_float ( string key ) {
+			var v = this.get (key);
 			if ( v != null ) {
-				return v.get_float();
+				return v.get_float ();
 			}
 			return null;
 		}
@@ -114,20 +114,20 @@ namespace Ambition {
 		 * @param key Key
 		 * @param v float
 		 */
-		public void set_float( string key, float v ) {
-			var val = Value( typeof(float) );
-			val.set_float(v);
-			this.set( key, val );
+		public void set_float ( string key, float v ) {
+			var val = Value ( typeof (float) );
+			val.set_float (v);
+			this.set ( key, val );
 		}
 
 		/**
 		 * Get an int64.
 		 * @param key Key
 		 */
-		public int64? get_int64( string key ) {
-			var v = this.get(key);
+		public int64? get_int64 ( string key ) {
+			var v = this.get (key);
 			if ( v != null ) {
-				return v.get_int64();
+				return v.get_int64 ();
 			}
 			return null;
 		}
@@ -137,20 +137,20 @@ namespace Ambition {
 		 * @param key Key
 		 * @param v int64
 		 */
-		public void set_int64( string key, int64 v ) {
-			var val = Value( typeof(int64) );
-			val.set_int64(v);
-			this.set( key, val );
+		public void set_int64 ( string key, int64 v ) {
+			var val = Value ( typeof (int64) );
+			val.set_int64 (v);
+			this.set ( key, val );
 		}
 
 		/**
 		 * Get an int.
 		 * @param key Key
 		 */
-		public int? get_int( string key ) {
-			var v = this.get(key);
+		public int? get_int ( string key ) {
+			var v = this.get (key);
 			if ( v != null ) {
-				return v.get_int();
+				return v.get_int ();
 			}
 			return null;
 		}
@@ -160,20 +160,20 @@ namespace Ambition {
 		 * @param key Key
 		 * @param v int
 		 */
-		public void set_int( string key, int v ) {
-			var val = Value( typeof(int) );
-			val.set_int(v);
-			this.set( key, val );
+		public void set_int ( string key, int v ) {
+			var val = Value ( typeof (int) );
+			val.set_int (v);
+			this.set ( key, val );
 		}
 
 		/**
 		 * Get a double.
 		 * @param key Key
 		 */
-		public double? get_double( string key ) {
-			var v = this.get(key);
+		public double? get_double ( string key ) {
+			var v = this.get (key);
 			if ( v != null ) {
-				return v.get_double();
+				return v.get_double ();
 			}
 			return null;
 		}
@@ -183,10 +183,10 @@ namespace Ambition {
 		 * @param key Key
 		 * @param v double
 		 */
-		public void set_double( string key, double v ) {
-			var val = Value( typeof(double) );
-			val.set_double(v);
-			this.set( key, val );
+		public void set_double ( string key, double v ) {
+			var val = Value ( typeof (double) );
+			val.set_double (v);
+			this.set ( key, val );
 		}
 	}
 }

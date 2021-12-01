@@ -29,7 +29,7 @@ namespace Ambition.CoreView {
 		public override State state { get; set; }
 		public override int64 size { get; set; }
 
-		public override InputStream? render() {
+		public override InputStream? render () {
 			return null;
 		}
 	}

@@ -25,10 +25,10 @@ namespace Ambition {
 	 * Action definition.
 	 */
 	public class Action : Object {
-		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger("Ambition.Action");
-		public ArrayList<HttpMethod?> methods { get; set; default = new ArrayList<HttpMethod?>(); }
-		public ArrayList<ActionMethod?> targets { get; set; default = new ArrayList<ActionMethod?>(); }
-		public string last_path { get { return this.targets.get( this.targets.size - 1 ).path; } }
+		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.Action");
+		public ArrayList<HttpMethod?> methods { get; set; default = new ArrayList<HttpMethod?> (); }
+		public ArrayList<ActionMethod?> targets { get; set; default = new ArrayList<ActionMethod?> (); }
+		public string last_path { get { return this.targets.get ( this.targets.size - 1 ).path; } }
 		public Regex _regex;
 
 		/**
@@ -37,16 +37,16 @@ namespace Ambition {
 		 * @param with_args Boolean, set to true if you want captures after the path.
 		 * @return Instance of this Action
 		 */
-		public Action path( string path, bool with_args = false ) {
-			string escaped = path.replace( "/", "\\/" );
-			if ( escaped.length > 2 && escaped.has_suffix("\\/") ) {
-				escaped = escaped.substring( 0, escaped.length - 2 );
+		public Action path ( string path, bool with_args = false ) {
+			string escaped = path.replace ( "/", "\\/" );
+			if ( escaped.length > 2 && escaped.has_suffix ("\\/") ) {
+				escaped = escaped.substring ( 0, escaped.length - 2 );
 			}
 			try {
-				var re = new Regex( "^" + escaped + ( with_args ? "" : "$" ) );
-				this.regex(re);
+				var re = new Regex ( "^" + escaped + ( with_args ? "" : "$" ) );
+				this.regex (re);
 			} catch (RegexError e) {
-				logger.error( "Invalid regex from path: %s".printf(path), e );
+				logger.error ( "Invalid regex from path: %s".printf( path), e );
 			}
 
 			return this;
@@ -57,7 +57,7 @@ namespace Ambition {
 		 * @param regex Regex object. Will not match leading /.
 		 * @return Instance of this Action
 		 */
-		public Action regex( Regex regex ) {
+		public Action regex ( Regex regex ) {
 			this._regex = regex;
 			return this;
 		}
@@ -68,8 +68,8 @@ namespace Ambition {
 		 * @return Instance of this Action
 		 * @see HttpMethod
 		 */
-		public Action allow_method( HttpMethod method ) {
-			this.methods.add(method);
+		public Action allow_method ( HttpMethod method ) {
+			this.methods.add (method);
 			return this;
 		}
 
@@ -78,8 +78,8 @@ namespace Ambition {
 		 * @param am ActionMethodCall delegate.
 		 * @return Instance of this Action
 		 */
-		public Action add_target( ActionMethodCall am ) {
-			this.targets.add( new ActionMethod(am) );
+		public Action add_target ( ActionMethodCall am ) {
+			this.targets.add ( new ActionMethod (am) );
 			return this;
 		}
 
@@ -88,8 +88,8 @@ namespace Ambition {
 		 * @param am ActionMethod instance.
 		 * @return Instance of this Action
 		 */
-		public Action add_target_method( ActionMethod am ) {
-			this.targets.add(am);
+		public Action add_target_method ( ActionMethod am ) {
+			this.targets.add (am);
 			return this;
 		}
 
@@ -99,15 +99,15 @@ namespace Ambition {
 		 * @param decoded_path Dispatcher-decoded path
 		 * @param method HttpMethod of given request
 		 */
-		public bool responds_to_request( string decoded_path, HttpMethod method, out MatchInfo info = null ) {
+		public bool responds_to_request ( string decoded_path, HttpMethod method, out MatchInfo info = null ) {
 			Regex re = this._regex;
-			if ( re.match( decoded_path, 0, out info ) ) {
+			if ( re.match ( decoded_path, 0, out info ) ) {
 				foreach ( var supported_method in this.methods ) {
 					if ( supported_method == method ) {
 						return true;
 					}
 				}
-				
+
 			}
 			return false;
 		}

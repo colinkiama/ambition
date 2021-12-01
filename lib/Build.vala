@@ -28,7 +28,7 @@ namespace Ambition {
 		private static const int RESULT_SUCCESS = 0;
 		private static const int RESULT_FAIL = -1;
 
-		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger("Ambition.Build");
+		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.Build");
 		internal string application_name;
 
 		/**
@@ -36,10 +36,10 @@ namespace Ambition {
 		 */
 		public string? target_version { get; set; }
 
-		public Build() {
-			var app_name = Ambition.Utility.get_application_name();
+		public Build () {
+			var app_name = Ambition.Utility.get_application_name ();
 			if ( app_name == null ) {
-				logger.error("Somehow, we are not in a project directory.");
+				logger.error ("Somehow, we are not in a project directory.");
 			}
 			application_name = app_name;
 		}
@@ -47,71 +47,71 @@ namespace Ambition {
 		/**
 		 * Read build config from path
 		 */
-		public bool parse_build_config( string file_path ) {
+		public bool parse_build_config ( string file_path ) {
 			File file;
 			try {
-				file = File.new_for_path(file_path);
-				if ( !file.query_exists() ) {
+				file = File.new_for_path (file_path);
+				if ( !file.query_exists () ) {
 					file = null;
 				}
 			} catch (IOError e) {
-				logger.error( "Cannot open '%s'".printf(file_path), e );
+				logger.error ( "Cannot open '%s'".printf( file_path), e );
 			}
 
 			if ( file == null ) {
-				logger.error( "Build config '%s' is missing.".printf(file_path) );
+				logger.error ( "Build config '%s' is missing.".printf( file_path) );
 				return false;
 			}
 
 			// Parse config file
 			try {
-				var input_stream = new DataInputStream( file.read() );
+				var input_stream = new DataInputStream ( file.read () );
 				string line;
-				while ( ( line = input_stream.read_line(null) ) != null ) {
-					parse_line(line);
+				while ( ( line = input_stream.read_line (null) ) != null ) {
+					parse_line (line);
 				}
 			} catch (Error e) {
-				logger.error( "Error reading config \"%s\"".printf( file.get_path() ), e );
+				logger.error ( "Error reading config \"%s\"".printf(  file.get_path( ) ), e );
 				return false;
 			}
 
 			return true;
 		}
 
-		public void parse_line( string line ) {
+		public void parse_line ( string line ) {
 			// Skip potential comments
-			if ( line.has_prefix("#") || line.has_prefix("//") || line.length == 0 ) {
+			if ( line.has_prefix( "#") || line.has_prefix( "//") || line.length == 0 ) {
 				return;
 			}
-			string key = line.substring( 0, line.index_of("=") ).chomp().chug();
-			string value = line.substring( line.index_of("=") + 1 ).chomp().chug();
-			string gfield = key.replace( "_", "-" );
-			ParamSpec p = this.get_class().find_property(gfield);
+			string key = line.substring ( 0, line.index_of ("=") ).chomp( ).chug( );
+			string value = line.substring ( line.index_of ("=") + 1 ).chomp( ).chug( );
+			string gfield = key.replace ( "_", "-" );
+			ParamSpec p = this.get_class ().find_property (gfield);
 			if ( p != null ) {
-				Value v = Value( typeof(string) );
-				v.set_string(value);
-				this.set_property( gfield, v );
+				Value v = Value ( typeof (string) );
+				v.set_string (value);
+				this.set_property ( gfield, v );
 			}
 		}
 
 		/**
 		 * Build current project.
 		 */
-		internal int build() {
+		internal int build () {
 			if ( target_version == null ) {
-				parse_build_config("config/build.conf");
+				parse_build_config ("config/build.conf");
 			}
-			var plugin = new Ambition.Utility.Plugin();
-			if ( plugin.resolve_plugins() == false ) {
+			var plugin = new Ambition.Utility.Plugin ();
+			if ( plugin.resolve_plugins () == false ) {
 				return RESULT_FAIL;
 			}
-			if ( setup_build_directory() != RESULT_SUCCESS ) {
+			if ( setup_build_directory () != RESULT_SUCCESS ) {
 				return RESULT_FAIL;
 			}
-			if ( cmake_project() != RESULT_SUCCESS ) {
+			if ( cmake_project () != RESULT_SUCCESS ) {
 				return RESULT_FAIL;
 			}
-			if ( build_project() != RESULT_SUCCESS ) {
+			if ( build_project () != RESULT_SUCCESS ) {
 				return RESULT_FAIL;
 			}
 			return RESULT_SUCCESS;
@@ -120,18 +120,18 @@ namespace Ambition {
 		/**
 		 * Prepare/create build directory
 		 */
-		internal int setup_build_directory() {
+		internal int setup_build_directory () {
 			try {
-				var build_directory = File.new_for_path("build");
-				if ( ! build_directory.query_exists() ) {
-					build_directory.make_directory();
+				var build_directory = File.new_for_path ("build");
+				if ( ! build_directory.query_exists () ) {
+					build_directory.make_directory ();
 				}
 			} catch (Error e) {
-				logger.error( "Unable to create or query build directory: %s".printf( e.message ) );
+				logger.error ( "Unable to create or query build directory: %s".printf(  e.message ) );
 				return -1;
 			}
-			if ( Environment.set_current_dir("build") == -1 ) {
-				logger.error( "Unable to change to build directory" );
+			if ( Environment.set_current_dir ("build") == -1 ) {
+				logger.error ( "Unable to change to build directory" );
 				return -1;
 			}
 			return 0;
@@ -140,26 +140,26 @@ namespace Ambition {
 		/**
 		 * Run cmake on current application.
 		 */
-		internal int cmake_project() {
+		internal int cmake_project () {
 			string standard_output, standard_error;
 			int exit_status;
 
-			logger.info( "Running cmake..." );
+			logger.info ( "Running cmake…" );
 			try {
-				Process.spawn_command_line_sync(
+				Process.spawn_command_line_sync (
 					"cmake ..",
 					out standard_output,
 					out standard_error,
 					out exit_status
 				);
 			} catch (SpawnError se) {
-				logger.error( "Unable to run cmake: %s".printf( se.message ) );
-				return_home();
+				logger.error ( "Unable to run cmake: %s".printf(  se.message ) );
+				return_home ();
 				return -1;
 			}
 			if ( exit_status != 0 ) {
-				logger.error( "Error building project files via cmake:\n%s".printf(standard_error) );
-				return_home();
+				logger.error ( "Error building project files via cmake:\n%s".printf( standard_error) );
+				return_home ();
 				return -1;
 			}
 
@@ -169,35 +169,35 @@ namespace Ambition {
 		/**
 		 * Make the current application.
 		 */
-		internal int build_project() {
+		internal int build_project () {
 			string standard_output, standard_error;
 			int exit_status;
 
-			logger.info( "Building project..." );
+			logger.info ( "Building project…" );
 			try {
-				Process.spawn_command_line_sync(
+				Process.spawn_command_line_sync (
 					"make",
 					out standard_output,
 					out standard_error,
 					out exit_status
 				);
 			} catch (SpawnError se) {
-				logger.error( "Unable to run make: %s".printf( se.message ) );
-				return_home();
+				logger.error ( "Unable to run make: %s".printf(  se.message ) );
+				return_home ();
 				return -1;
 			}
 			if ( exit_status != 0 ) {
-				logger.error( "Error building current application:\n%s".printf(standard_error) );
-				return_home();
+				logger.error ( "Error building current application:\n%s".printf( standard_error) );
+				return_home ();
 				return -1;
 			}
 
 			return 0;
 		}
 
-		private void return_home() {
-			if ( Environment.get_current_dir().has_suffix("build") ) {
-				Environment.set_current_dir("..");
+		private void return_home () {
+			if ( Environment.get_current_dir ().has_suffix ("build") ) {
+				Environment.set_current_dir ("..");
 			}
 		}
 	}

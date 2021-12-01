@@ -30,36 +30,36 @@ namespace Ambition.Session {
 	 * application config.
 	 */
 	public class StorableFile : Object,IStorable {
-		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger("Ambition.Session.StorableFile");
+		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.Session.StorableFile");
 
-		public void store( string session_id, Interface i ) {
-			string full_path = get_file_root() + "/" + session_id + ".session";
-			FileStream session_file = FileStream.open( full_path, "w" );
-			session_file.printf( i.serialize() );
+		public void store ( string session_id, Interface i ) {
+			string full_path = get_file_root () + "/" + session_id + ".session";
+			FileStream session_file = FileStream.open ( full_path, "w" );
+			session_file.printf ( i.serialize () );
 		}
 
-		public Interface? retrieve( string session_id ) {
-			var file = File.new_for_path( get_file_root() + "/" + session_id + ".session" );
-			if ( !file.query_exists() ) {
-				logger.info("Session not found");
+		public Interface? retrieve ( string session_id ) {
+			var file = File.new_for_path ( get_file_root () + "/" + session_id + ".session" );
+			if ( !file.query_exists () ) {
+				logger.info ("Session not found");
 				return null;
 			}
 			try {
-				var sb = new StringBuilder();
-				var dis = new DataInputStream( file.read() );
+				var sb = new StringBuilder ();
+				var dis = new DataInputStream ( file.read () );
 				string line;
-				while ( ( line = dis.read_line(null) ) != null ) {
-					sb.append(line);
+				while ( ( line = dis.read_line (null) ) != null ) {
+					sb.append (line);
 				}
-				return new Interface.from_serialized( session_id, sb.str );
+				return new Interface.from_serialized ( session_id, sb.str );
 			} catch (Error e) {
-				logger.warn( "Error reading from storage", e );
+				logger.warn ( "Error reading from storage", e );
 			}
 			return null;
 		}
 
-		private string get_file_root() {
-			return Config.lookup_with_default( "storable.file.path", GLib.Environment.get_tmp_dir() );
+		private string get_file_root () {
+			return Config.lookup_with_default ( "storable.file.path", GLib.Environment.get_tmp_dir( ) );
 		}
 
 	}

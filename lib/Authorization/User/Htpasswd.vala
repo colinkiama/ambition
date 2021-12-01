@@ -29,12 +29,12 @@ namespace Ambition.Authorization.User {
 		public int id { get; set; default = 0; }
 		public string? username { get; set; }
 
-		public Htpasswd.with_params( int id, string username ) {
+		public Htpasswd.with_params ( int id, string username ) {
 			this.id = id;
 			this.username = username;
 		}
 
-		public Object? get_object() {
+		public Object? get_object () {
 			return null;
 		}
 	}

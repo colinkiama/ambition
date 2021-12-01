@@ -55,13 +55,13 @@ namespace Ambition.Testing {
 		public string? result_content {
 			get {
 				if ( _result_content == null ) {
-					uint8[] buffer = new uint8[ response.get_body_length() ];
+					uint8[] buffer = new uint8[ response.get_body_length () ];
 					size_t size;
 					try {
-						response.get_body_data().read_all( buffer, out size );
+						response.get_body_data ().read_all ( buffer, out size );
 						_result_content = (string) buffer;
 					} catch (IOError e) {
-						Log4Vala.Logger.get_logger("Ambition.Testing.TestResponse").error( "Error reading body data", e );
+						Log4Vala.Logger.get_logger ("Ambition.Testing.TestResponse").error(  "Error reading body data", e );
 					}
 				}
 				return _result_content;
@@ -72,16 +72,16 @@ namespace Ambition.Testing {
 		 * Assert HTTP response status code matches value.
 		 * @param status HTTP status code
 		 */
-		public void assert_status_is( int status ) {
-			assert( response.status == status );
+		public void assert_status_is ( int status ) {
+			assert ( response.status == status );
 		}
 
 		/**
 		 * Assert HTTP response status code does not match value.
 		 * @param status HTTP status code
 		 */
-		public void assert_status_isnt( int status ) {
-			assert( response.status != status );
+		public void assert_status_isnt ( int status ) {
+			assert ( response.status != status );
 		}
 
 		/**
@@ -89,8 +89,8 @@ namespace Ambition.Testing {
 		 * @param header_name Header name (ex: X-Powered-By)
 		 * @param header_value Header value (ex: Ambition)
 		 */
-		public void assert_header_is( string header_name, string header_value ) {
-			assert( response.headers.has_key(header_name) && response.headers[header_name] == header_value );
+		public void assert_header_is ( string header_name, string header_value ) {
+			assert ( response.headers.has_key (header_name) && response.headers[header_name] == header_value );
 		}
 
 		/**
@@ -98,72 +98,72 @@ namespace Ambition.Testing {
 		 * @param header_name Header name (ex: X-Powered-By)
 		 * @param header_value Header value (ex: Unicorns)
 		 */
-		public void assert_header_isnt( string header_name, string header_value ) {
-			assert( !response.headers.has_key(header_name) || ( response.headers.has_key(header_name) && response.headers[header_name] != header_value ) );
+		public void assert_header_isnt ( string header_name, string header_value ) {
+			assert ( !response.headers.has_key (header_name) || ( response.headers.has_key (header_name) && response.headers[header_name] != header_value ) );
 		}
 
 		/**
 		 * Assert Content Type matches value.
 		 * @param content_type Content type string.
 		 */
-		public void assert_content_type_is( string content_type ) {
-			assert( response.content_type == content_type );
+		public void assert_content_type_is ( string content_type ) {
+			assert ( response.content_type == content_type );
 		}
 
 		/**
 		 * Assert Content Type does not match value.
 		 * @param content_type Content type string.
 		 */
-		public void assert_content_type_isnt( string content_type ) {
-			assert( response.content_type != content_type );
+		public void assert_content_type_isnt ( string content_type ) {
+			assert ( response.content_type != content_type );
 		}
 
 		/**
 		 * Assert Content Type contains value (case insensitive).
 		 * @param content_type_like Content type string.
 		 */
-		public void assert_content_type_like( string content_type_like ) {
-			assert( response.content_type.down().contains(content_type_like.down()) );
+		public void assert_content_type_like ( string content_type_like ) {
+			assert ( response.content_type.down ().contains (content_type_like.down ()) );
 		}
 
 		/**
 		 * Assert Content Type does not contain value (case insensitive).
 		 * @param content_type_like Content type string.
 		 */
-		public void assert_content_type_unlike( string content_type_like ) {
-			assert( response.content_type.down().contains(content_type_like.down()) == false );
+		public void assert_content_type_unlike ( string content_type_like ) {
+			assert ( response.content_type.down ().contains (content_type_like.down ()) == false );
 		}
 
 		/**
 		 * Assert result content matches value.
 		 * @param content Content string.
 		 */
-		public void assert_content_is( string content ) {
-			assert( result_content == content );
+		public void assert_content_is ( string content ) {
+			assert ( result_content == content );
 		}
 
 		/**
 		 * Assert result content does not match value.
 		 * @param content Content string.
 		 */
-		public void assert_content_isnt( string content ) {
-			assert( result_content != content );
+		public void assert_content_isnt ( string content ) {
+			assert ( result_content != content );
 		}
 
 		/**
 		 * Assert result content contains value (case sensitive).
 		 * @param content Content string.
 		 */
-		public void assert_content_like( string content ) {
-			assert( result_content.contains(content) );
+		public void assert_content_like ( string content ) {
+			assert ( result_content.contains (content) );
 		}
 
 		/**
 		 * Assert result content does not contain value (case sensitive).
 		 * @param content Content string.
 		 */
-		public void assert_content_unlike( string content ) {
-			assert( result_content.contains(content) == false );
+		public void assert_content_unlike ( string content ) {
+			assert ( result_content.contains (content) == false );
 		}
 	}
 }

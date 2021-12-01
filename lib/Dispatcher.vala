@@ -28,7 +28,7 @@ namespace Ambition {
 	 * dispatch a request from a web endpoint to a method or series of methods.
 	 */
 	public class Dispatcher : Object {
-		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger("Ambition.Dispatcher");
+		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.Dispatcher");
 		private Engine.Base _engine = null;
 		private Ambition.Application application = null;
 		private bool show_powered_by = false;
@@ -45,51 +45,51 @@ namespace Ambition {
 		}
 
 		public ArrayList<Action?> actions { get; set; }
-		public ArrayList<IPlugin?> plugins { get; private set; default = new ArrayList<IPlugin?>(); }
+		public ArrayList<IPlugin?> plugins { get; private set; default = new ArrayList<IPlugin?> (); }
 
-		public Dispatcher( Ambition.Application application, string[] args ) {
+		public Dispatcher ( Ambition.Application application, string[] args ) {
 			// Register dynamic types
-			typeof(Engine.Raw).name();
+			typeof( Engine.Raw).name( );
 
-			set_default_config(args);
-			App.set_log_level( Config.lookup_with_default( "app.log_level", "debug" ) );
+			set_default_config (args);
+			App.set_log_level ( Config.lookup_with_default ( "app.log_level", "debug" ) );
 			this.args = args;
 			this.application = application;
 		}
 
-		public static void set_default_config( string[] args ) {
+		public static void set_default_config ( string[] args ) {
 			// Get executable path
 			string executable_path = args[0];
-			if ( executable_path.substring( 0, 1 ) != "/" ) {
-				executable_path = Environment.get_current_dir() + "/" + executable_path;
+			if ( executable_path.substring ( 0, 1 ) != "/" ) {
+				executable_path = Environment.get_current_dir () + "/" + executable_path;
 			}
-			if ( executable_path.has_suffix("-bin") ) {
-				executable_path = executable_path.substring( 0, executable_path.length - 4 );
+			if ( executable_path.has_suffix ("-bin") ) {
+				executable_path = executable_path.substring ( 0, executable_path.length - 4 );
 			}
-			int last_index = executable_path.last_index_of_char('/');
-			Config.set_value( "ambition.app_name", executable_path.substring( last_index + 1 ) );
-			Config.set_value( "ambition.app_path", executable_path.substring( 0, last_index ) );
+			int last_index = executable_path.last_index_of_char ('/');
+			Config.set_value ( "ambition.app_name", executable_path.substring(  last_index + 1 ) );
+			Config.set_value ( "ambition.app_path", executable_path.substring(  0, last_index ) );
 		}
 
-		public bool run() {
+		public bool run () {
 			if ( actions == null ) {
-				logger.error("No actions specified, nothing to do!");
+				logger.error ("No actions specified, nothing to do!");
 				return false;
 			}
 
 			// Load plugins
-			this.plugins = PluginLoader.load_plugins_from_directory("plugins");
-			this.plugins.add( new Session.SessionPlugin() );
+			this.plugins = PluginLoader.load_plugins_from_directory( "plugins");
+			this.plugins.add ( new Session.SessionPlugin () );
 
-			execute_startup_hooks();
+			execute_startup_hooks ();
 
 			// Parse engine config, if available
-			string config_engine = Config.lookup("engine");
+			string config_engine = Config.lookup( "engine");
 			if ( config_engine == null ) {
-				config_engine = Config.lookup("app.engine");
+				config_engine = Config.lookup ("app.engine");
 			}
 			if ( config_engine != null ) {
-				load_engine_from_string(config_engine);
+				load_engine_from_string (config_engine);
 			}
 
 			// Parse command line options
@@ -98,7 +98,7 @@ namespace Ambition {
 				if ( element == "--engine" ) {
 					// Attempt to load engine
 					string engine_name = args[arg_index + 1];
-					load_engine_from_string(engine_name);
+					load_engine_from_string (engine_name);
 					break;
 				}
 				arg_index++;
@@ -106,59 +106,59 @@ namespace Ambition {
 
 			// Get a default engine
 			if ( engine == null ) {
-				engine = new Engine.Raw();
+				engine = new Engine.Raw ();
 			}
 
 			// Show actions
-			this.actions.add_all( Controller.Static.add_actions() );
-			logger.debug("Actions:");
+			this.actions.add_all(  Controller.Static.add_actions( ) );
+			logger.debug ("Actions:");
 			foreach ( var action in actions ) {
 				Regex re = action._regex;
 				if ( action.methods.size == 0 ) {
-					action.methods.add( HttpMethod.ALL );
+					action.methods.add ( HttpMethod.ALL );
 				}
 
 				// Normally, we rely on logger to determine whether to output
 				// anything, but in this case, let's save some minor ops if we
 				// are not in debug mode.
 				if ( logger.log_level == Log4Vala.Level.DEBUG ) {
-					var methods = new ArrayList<string>();
+					var methods = new ArrayList<string> ();
 					foreach ( HttpMethod hm in action.methods ) {
-						methods.add( hm.to_string().substring( 0, 1 ) );
+						methods.add ( hm.to_string ().substring ( 0, 1 ) );
 					}
 
-					var targets = new ArrayList<string>();
+					var targets = new ArrayList<string> ();
 					foreach ( ActionMethod am in action.targets ) {
-						targets.add( am.path );
+						targets.add ( am.path );
 					}
 
-					logger.debug(
-						" %-4s %-32s %s".printf(
-							arraylist_joinv( "", methods ),
-							( re.get_pattern().length > 32 ? ( re.get_pattern().substring( 0, 31 ) + "…" ) : re.get_pattern() ),
-							arraylist_joinv( " > ", targets )
+					logger.debug (
+						" %-4s %-32s %s".printf( 
+							arraylist_joinv ( "", methods ),
+							( re.get_pattern ().length > 32 ? ( re.get_pattern ().substring ( 0, 31 ) + "…" ) : re.get_pattern( ) ),
+							arraylist_joinv ( " > ", targets )
 						)
 					);
 				}
 			}
 
 			// Create authorizers
-			Authorization.Builder.build_authorizers();
+			Authorization.Builder.build_authorizers( );
 			if ( App.authorizers.size > 0 ) {
-				logger.debug("Authorizers:");
+				logger.debug ("Authorizers:");
 				foreach ( var authorizer_name in App.authorizers.keys ) {
-					logger.debug(
-						" %s (%s)".printf(
+					logger.debug (
+						" %s (%s)".printf( 
 							authorizer_name,
-							App.authorizers[authorizer_name].get_name()
+							App.authorizers[authorizer_name].get_name ()
 						)
 					);
 				}
 			}
 
 			// Cache runtime config
-			this.show_powered_by = Config.lookup_bool("app.show_powered_by");
-			this.engine.execute();
+			this.show_powered_by = Config.lookup_bool( "app.show_powered_by");
+			this.engine.execute ();
 			return true;
 		}
 
@@ -168,11 +168,11 @@ namespace Ambition {
 		 * Engine.
 		 * @param id Identifier for this State.
 		 */
-		public State initialize_state( string id ) {
-			var state = new State(id);
+		public State initialize_state ( string id ) {
+			var state = new State (id);
 			state.dispatcher = this;
-			state.request = new Request();
-			state.response = new Response();
+			state.request = new Request ();
+			state.response = new Response ();
 
 			return state;
 		}
@@ -184,56 +184,56 @@ namespace Ambition {
 		 * matches, run through those actions, and set up the response.
 		 * @param state Current engine state
 		 */
-		public void handle_request( State state ) {
+		public void handle_request ( State state ) {
 			// Throw away invalid requests
 			if ( state.request.ip == null && state.request.method == HttpMethod.NONE ) {
 				return;
 			}
 
-			logger.info("");
-			logger.info(
-				"Request from %s: %s %s".printf(
+			logger.info ("");
+			logger.info (
+				"Request from %s: %s %s".printf( 
 					state.request.ip,
-					state.request.method.to_string(),
+					state.request.method.to_string (),
 					state.request.path
 				)
 			);
 
 			// Call on_request_dispatch hook in application.
-			application.on_request_dispatch(state);
+			application.on_request_dispatch( state);
 
 			// Call on_request_dispatch hook on registered plugins.
-			foreach( IPlugin p in this.plugins ) {
-				p.on_request_dispatch(state);
+			foreach(  IPlugin p in this.plugins ) {
+				p.on_request_dispatch (state);
 			}
 
 			// Get action list for request
-			var action_list = find_actions_for(state);
+			var action_list = find_actions_for( state);
 
 			if ( action_list != null && action_list.size > 0 ) {
-				var action_response = execute_action_list( action_list, state );
-				display_action_response( action_response, state );
+				var action_response = execute_action_list ( action_list, state );
+				display_action_response ( action_response, state );
 			}
 			// Call on_request_end hook in application.
-			application.on_request_end(state);
+			application.on_request_end( state);
 
 			// Call on_request_end hook on registered plugins.
-			foreach( IPlugin p in this.plugins ) {
-				p.on_request_end(state);
+			foreach(  IPlugin p in this.plugins ) {
+				p.on_request_end (state);
 			}
 
 			// Set powered by if required
 			if (show_powered_by) {
-				state.response.set_header( "X-Powered-By", "Ambition" );
+				state.response.set_header ( "X-Powered-By", "Ambition" );
 			}
 
 			// Output response
-			logger.info(
-				"Rendered %lld bytes, type %s, status %d. %0.4f ms.".printf(
-					state.response.get_body_length(),
+			logger.info( 
+				"Rendered %lld bytes, type %s, status %d. %0.4f ms.".printf( 
+					state.response.get_body_length (),
 					state.response.content_type,
 					state.response.status,
-					state.elapsed_ms()
+					state.elapsed_ms ()
 				)
 			);
 		}
@@ -242,14 +242,14 @@ namespace Ambition {
 		 * Add actions from an Actions subclass.
 		 * @param actions Actions subclass
 		 */
-		public void add_actions_class( Actions actions ) {
-			var action_array = actions.actions();
+		public void add_actions_class ( Actions actions ) {
+			var action_array = actions.actions ();
 			if ( action_array.length > 0 ) {
 				if ( this.actions == null ) {
-					this.actions = new ArrayList<Action?>();
+					this.actions = new ArrayList<Action?> ();
 				}
-				foreach( var action in action_array ) {
-					this.actions.add(action);
+				foreach ( var action in action_array ) {
+					this.actions.add (action);
 				}
 			}
 		}
@@ -258,9 +258,9 @@ namespace Ambition {
 		 * Output the calculated action list
 		 * @param action_result Calculated action list
 		 */
-		public void display_action_response( ArrayList<string> action_result, State state ) {
+		public void display_action_response ( ArrayList<string> action_result, State state ) {
 			foreach ( string a in action_result ) {
-				logger.debug(a);
+				logger.debug (a);
 			}
 		}
 
@@ -269,20 +269,20 @@ namespace Ambition {
 		 * @param action_list List of ActionMethods
 		 * @param state State object
 		 */
-		public ArrayList<string> execute_action_list( ArrayList<ActionMethod?> action_list, State state ) {
-			var al = new ArrayList<string>();
+		public ArrayList<string> execute_action_list ( ArrayList<ActionMethod?> action_list, State state ) {
+			var al = new ArrayList<string> ();
 			foreach ( ActionMethod a in action_list ) {
-				Result? r = a.execute(state);
+				Result? r = a.execute (state);
 				if ( r != null && ! (r is CoreView.None) ) {
 					r.state = state;
-					InputStream? eis = r.render();
+					InputStream? eis = r.render ();
 					if ( eis != null ) {
 						state.response.body_stream = eis;
 						state.response.body_stream_length = r.size;
 					}
 				}
-				al.add( "|> %s".printf( a.path != null ? a.path : "/generic/action" ) );
-				if ( state.response.is_done() ) {
+				al.add ( "|> %s".printf(  a.path != null ? a.path : "/generic/action" ) );
+				if ( state.response.is_done () ) {
 					break;
 				}
 			}
@@ -295,16 +295,16 @@ namespace Ambition {
 		 * @param v Value to inject into property
 		 * @returns true if a value was injected
 		 */
-		public bool inject_to_application( Type search_type, Value v ) {
+		public bool inject_to_application ( Type search_type, Value v ) {
 			bool injected = false;
-			ParamSpec[] properties = this.application.get_class().list_properties();
+			ParamSpec[] properties = this.application.get_class ().list_properties ();
 			foreach ( ParamSpec p in properties ) {
 				if ( p.value_type == search_type ) {
-					Value current_v = Value( p.value_type );
-					this.application.get_property( p.name, ref current_v );
+					Value current_v = Value ( p.value_type );
+					this.application.get_property ( p.name, ref current_v );
 					// If value is null, then we can inject new value
-					if ( (int64) current_v.peek_pointer() == 0 ) {
-						this.application.set_property( p.name, v );
+					if ( (int64) current_v.peek_pointer( ) == 0 ) {
+						this.application.set_property ( p.name, v );
 						injected = true;
 					}
 				}
@@ -317,38 +317,38 @@ namespace Ambition {
 		 * a given request.
 		 * @param state Current engine state
 		 */
-		private ArrayList<ActionMethod?>? find_actions_for( State state ) {
-			string decoded_path = Uri.unescape_string( state.request.path );
-			decoded_path = decoded_path.replace( "//", "/" );
+		private ArrayList<ActionMethod?>? find_actions_for ( State state ) {
+			string decoded_path = Uri.unescape_string ( state.request.path );
+			decoded_path = decoded_path.replace ( "//", "/" );
 			foreach ( var action in actions ) {
-				string action_pattern = action._regex.get_pattern();
+				string action_pattern = action._regex.get_pattern ();
 				MatchInfo info = null;
-				if ( action.responds_to_request( decoded_path, state.request.method, out info ) ) {
-					logger.debug( "Matched pattern %s".printf(action_pattern) );
-					state.request.captures = info.fetch_all();
+				if ( action.responds_to_request ( decoded_path, state.request.method, out info ) ) {
+					logger.debug ( "Matched pattern %s".printf( action_pattern) );
+					state.request.captures = info.fetch_all ();
 
 					// Determine named captures
-					var re_named = /\(\?<([^>]+)>/;
+					var re_named = /\( \?<( [^>]+)>/;
 					MatchInfo named_info = null;
-					if ( re_named.match( action_pattern, 0, out named_info ) ) {
-						while ( named_info.matches() ) {
-							string name = named_info.fetch(1);
-							state.request.named_captures[name] = info.fetch_named(name);
+					if ( re_named.match ( action_pattern, 0, out named_info ) ) {
+						while ( named_info.matches () ) {
+							string name = named_info.fetch (1);
+							state.request.named_captures[name] = info.fetch_named (name);
 							try {
-								named_info.next();
+								named_info.next ();
 							} catch ( RegexError e ) {
-								logger.error( "Error matching next capture in URL", e );
+								logger.error ( "Error matching next capture in URL", e );
 								break;
 							}
 						}
 					}
 
 					// Determine arguments
-					if ( !action._regex.get_pattern().has_suffix("$/") ) {
+					if ( !action._regex.get_pattern( ).has_suffix( "$/") ) {
 						try {
-							state.request._arguments = action._regex.replace( decoded_path, -1, 0, "" );
+							state.request._arguments = action._regex.replace ( decoded_path, -1, 0, "" );
 						} catch ( RegexError e ) {
-							logger.error("Invalid regex for arguments");
+							logger.error ("Invalid regex for arguments");
 						}
 					}
 
@@ -358,21 +358,21 @@ namespace Ambition {
 			return null;
 		}
 
-		private void execute_startup_hooks() {
+		private void execute_startup_hooks () {
 			// Initialize Plugins
 			foreach ( IPlugin p in plugins ) {
-				p.register_plugin();
-				logger.info( "Registered plugin '%s'.".printf( p.name ) );
-				p.on_application_start(this);
+				p.register_plugin ();
+				logger.info ( "Registered plugin '%s'.".printf(  p.name ) );
+				p.on_application_start (this);
 			}
 		}
 
-		private void load_engine_from_string( string engine_name ) {
-			Type t = Type.from_name( "AmbitionEngine%s".printf(engine_name) );
+		private void load_engine_from_string ( string engine_name ) {
+			Type t = Type.from_name ( "AmbitionEngine%s".printf( engine_name) );
 			if ( t > 0 ) {
-				this.engine = (Engine.Base) Object.new(t);
+				this.engine = (Engine.Base) Object.new (t);
 			} else {
-				logger.error( "Invalid engine specified: %s".printf(engine_name) );
+				logger.error ( "Invalid engine specified: %s".printf( engine_name) );
 			}
 		}
 	}

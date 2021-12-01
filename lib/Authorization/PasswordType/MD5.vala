@@ -33,8 +33,8 @@ namespace Ambition.Authorization.PasswordType {
 	 * override application values, not added to them.
 	 */
 	public class MD5 : Hashed {
-		protected override string hash( string incoming ) {
-			return Checksum.compute_for_string( ChecksumType.MD5, incoming );
+		protected override string hash ( string incoming ) {
+			return Checksum.compute_for_string ( ChecksumType.MD5, incoming );
 		}
 	}
 }

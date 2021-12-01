@@ -240,14 +240,14 @@ public static bool in_application () {
             MatchInfo info;
             while ( ( line = input_stream.read_line (null) ) != null ) {
                 if ( /namespace ([^ ]+)/.match ( line, 0, out info ) ) {
-                    Config.set_value ( "ambition.app_name", info.fetch(  1) );
+                    Config.set_value ( "ambition.app_name", info.fetch(   1) );
                 }
             }
         } catch (Error e) {
-            Log4Vala.Logger.get_logger ("Ambition.Binary").error(   "Error trying to read Application.vala", e );
+            Log4Vala.Logger.get_logger ("Ambition.Binary").error(    "Error trying to read Application.vala", e );
             return false;
         }
-        Config.set_value ( "ambition.app_path", Environment.get_current_dir(  ) );
+        Config.set_value ( "ambition.app_path", Environment.get_current_dir(   ) );
 
         return true;
     }
@@ -424,10 +424,10 @@ public static void usage ( string? method = null, bool as_interactive = false ) 
 
         if ( method == null || ( method != null && utilities.has_key (method) ) ) {
             foreach ( var utility_name in utilities.keys ) {
-                stdout.printf ( "%s\n", utilities[utility_name].help(  ) );
+                stdout.printf ( "%s\n", utilities[utility_name].help(   ) );
             }
         } else if ( utilities != null && method in utilities.keys ) {
-            stdout.printf ( "%s\n", utilities[method].help(  ) );
+            stdout.printf ( "%s\n", utilities[method].help(   ) );
         }
     }
 }

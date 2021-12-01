@@ -37,7 +37,7 @@ namespace Ambition {
 		public Session.Interface session {
 			get {
 				if ( _session == null ) {
-					_session = new Session.Interface();
+					_session = new Session.Interface ();
 				}
 				return _session;
 			}
@@ -50,7 +50,7 @@ namespace Ambition {
 		public Authorization.Authorize authorization {
 			get {
 				if ( _authorization == null ) {
-					_authorization = new Authorization.Authorize();
+					_authorization = new Authorization.Authorize ();
 				}
 				return _authorization;
 			}
@@ -75,7 +75,7 @@ namespace Ambition {
 		/**
 		 * Use the stash in this request.
 		 */
-		public Stash stash { get; set; default = new Stash(); }
+		public Stash stash { get; set; default = new Stash (); }
 
 		/**
 		 * Current user, if authenticated. NULL if no user present.
@@ -101,25 +101,25 @@ namespace Ambition {
 		/**
 		 * Create new State object with a given identifier.
 		 */
-		public State( string id ) {
-			start = new DateTime.now_utc();
+		public State ( string id ) {
+			start = new DateTime.now_utc ();
 		}
 
 		/**
 		 * Elapsed time since the start of this request.
 		 */
-		public int64 elapsed() {
-			return ( new DateTime.now_utc() ).difference(start);
+		public int64 elapsed () {
+			return ( new DateTime.now_utc () ).difference (start);
 		}
 
 		/**
 		 * Elapsed time since the start of this request, in milliseconds.
 		 */
-		public float elapsed_ms() {
-			return ( (float) elapsed() ) / 1000.0f;
+		public float elapsed_ms () {
+			return ( (float) elapsed () ) / 1000.0f;
 		}
 
-		public void ping() {}
+		public void ping () {}
 
 		/**
 		 * Shortcut method to authorization.authorize() method.
@@ -127,16 +127,16 @@ namespace Ambition {
 		 * @param username String with the given username
 		 * @param password String with the given password
 		 */
-		public bool authorize( string authorizer_name, string username, string password ) {
-			return this.authorization.authorize( authorizer_name, username, password );
+		public bool authorize ( string authorizer_name, string username, string password ) {
+			return this.authorization.authorize ( authorizer_name, username, password );
 		}
 
 		/**
 		 * Shortcut to remove user and destroy session.
 		 */
-		public void logout() {
-			this.authorization.unauthorize();
-			this.session.destroy();
+		public void logout () {
+			this.authorization.unauthorize ();
+			this.session.destroy ();
 		}
 	}
 }

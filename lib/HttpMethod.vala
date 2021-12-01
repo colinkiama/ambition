@@ -38,9 +38,9 @@ namespace Ambition {
 		/**
 		 * Return an HttpMethod by name.
 		 */
-		public static HttpMethod from_string( string method ) {
-			EnumClass ec = (EnumClass) typeof(HttpMethod).class_ref();
-			unowned EnumValue? ev = ec.get_value_by_nick( method.down() );
+		public static HttpMethod from_string ( string method ) {
+			EnumClass ec = (EnumClass) typeof (HttpMethod).class_ref ();
+			unowned EnumValue? ev = ec.get_value_by_nick ( method.down () );
 			if ( ev == null ) {
 				return HttpMethod.NONE;
 			}
@@ -50,10 +50,10 @@ namespace Ambition {
 		/**
 		 * Return this HttpMethod string
 		 */
-		public string to_string() {
-			EnumClass ec = (EnumClass) typeof(HttpMethod).class_ref();
-			unowned EnumValue? ev = ec.get_value(this);
-			return ev.value_nick.up();
+		public string to_string () {
+			EnumClass ec = (EnumClass) typeof (HttpMethod).class_ref ();
+			unowned EnumValue? ev = ec.get_value (this);
+			return ev.value_nick.up ();
 		}
 	}
 }

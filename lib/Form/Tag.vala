@@ -23,47 +23,47 @@ using Gee;
 namespace Ambition.Form {
 	public interface Tag : Object {
 		public string a ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "input", params, content );
+			return generic ( "input", params, content );
 		}
 
 		public string input ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "input", params, content );
+			return generic ( "input", params, content );
 		}
 
 		public string button ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "button", params, content );
+			return generic ( "button", params, content );
 		}
 
 		public string textarea ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "textarea", params, content );
+			return generic ( "textarea", params, content );
 		}
 
 		public string div ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "div", params, content );
+			return generic ( "div", params, content );
 		}
 
 		public string span ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "span", params, content );
+			return generic ( "span", params, content );
 		}
 
 		public string dd ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "dd", params, content );
+			return generic ( "dd", params, content );
 		}
 
 		public string dt ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "dt", params, content );
+			return generic ( "dt", params, content );
 		}
 
 		public string dl ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "dl", params, content );
+			return generic ( "dl", params, content );
 		}
 
 		public string select ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "select", params, content );
+			return generic ( "select", params, content );
 		}
 
 		public string option ( HashMap<string,string>? params, string? content = null ) {
-			return generic( "option", params, content );
+			return generic ( "option", params, content );
 		}
 
 		/**
@@ -73,9 +73,9 @@ namespace Ambition.Form {
 		 * @return string
 		 */
 		public string label ( string field_for, string? content = null ) {
-			var hm = new HashMap<string,string>();
-			hm.set( "for", field_for );
-			return generic( "label", hm, content );
+			var hm = new HashMap<string,string> ();
+			hm.set ( "for", field_for );
+			return generic ( "label", hm, content );
 		}
 
 		/**
@@ -86,35 +86,35 @@ namespace Ambition.Form {
 		 * @return string
 		 */
 		public string label_class ( string class_name, string field_for, string? content = null ) {
-			var hm = new HashMap<string,string>();
-			hm.set( "class", class_name );
-			hm.set( "for", field_for );
-			return generic( "label", hm, content );
+			var hm = new HashMap<string,string> ();
+			hm.set ( "class", class_name );
+			hm.set ( "for", field_for );
+			return generic ( "label", hm, content );
 		}
 
 		public string generic ( string tag_name, HashMap<string,string>? params, string? content = null ) {
-			var sb = new StringBuilder();
-			sb.append("<");
-			sb.append(tag_name);
+			var sb = new StringBuilder ();
+			sb.append ("<");
+			sb.append (tag_name);
 			if ( params != null ) {
 				foreach ( string k in params.keys ) {
-					sb.append(" ");
-					sb.append(k);
-					sb.append("=\"");
-					if ( params.get(k) != null ) {
-						sb.append( params.get(k).replace( "\"", "\\\"" ) );
+					sb.append (" ");
+					sb.append (k);
+					sb.append ("=\"");
+					if ( params.get (k) != null ) {
+						sb.append ( params.get (k).replace ( "\"", "\\\"" ) );
 					}
-					sb.append("\"");
+					sb.append ("\"");
 				}
 			}
 			if ( content != null ) {
-				sb.append(">");
-				sb.append(content);
-				sb.append("</");
-				sb.append(tag_name);
-				sb.append(">");
+				sb.append (">");
+				sb.append (content);
+				sb.append ("</");
+				sb.append (tag_name);
+				sb.append (">");
 			} else {
-				sb.append(" />");
+				sb.append (" />");
 			}
 			return sb.str;
 		}

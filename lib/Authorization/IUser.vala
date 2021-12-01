@@ -44,15 +44,15 @@ namespace Ambition.Authorization {
 		/**
 		 * If there is an associated object for this user, return it.
 		 */
-		public abstract Object? get_object();
+		public abstract Object? get_object ();
 
 		/**
 		 * Serialize current user object for loading later. The default
 		 * implementation handles the serialization of id and username.
 		 * @return Serialized string
 		 */
-		public string serialize() {
-			return "%d¬%s".printf( id, username );
+		public string serialize () {
+			return "%d¬%s".printf(  id, username );
 		}
 
 		/**
@@ -60,10 +60,10 @@ namespace Ambition.Authorization {
 		 * deserialization of id and username.
 		 * @param serialized Serialized data
 		 */
-		public void deserialize( string serialized ) {
-			string id = serialized.substring( 0, serialized.index_of("¬") );
-			this.id = int.parse(id);
-			this.username = serialized.substring( serialized.index_of("¬") + 2 );
+		public void deserialize ( string serialized ) {
+			string id = serialized.substring ( 0, serialized.index_of ("¬") );
+			this.id = int.parse (id);
+			this.username = serialized.substring ( serialized.index_of ("¬") + 2 );
 		}
 	}
 }

@@ -30,7 +30,7 @@ namespace Ambition.Authorization {
 		/**
 		 * Initialize authenticator
 		 */
-		public abstract void init( HashMap<string,string> config );
+		public abstract void init ( HashMap<string,string> config );
 
 		/**
 		 * Authenticate the current user given a username and password
@@ -40,14 +40,14 @@ namespace Ambition.Authorization {
 		 *                authorizer or submodules.
 		 * @return User object of authorized user or null
 		 */
-		public abstract IUser? authorize( string username, string password, HashMap<string,string>? options = null );
+		public abstract IUser? authorize ( string username, string password, HashMap<string,string>? options = null );
 
 		/**
 		 * Get a user object from a serialized string.
 		 * @param serialized Serialized object data
 		 * @return User object of authorized user or null
 		 */
-		public abstract IUser? get_user_from_serialized( string serialized );
+		public abstract IUser? get_user_from_serialized ( string serialized );
 
 		/**
 		 * Retrieve a PasswordType from a string. If the type contains a ".",
@@ -55,26 +55,26 @@ namespace Ambition.Authorization {
 		 * Ambition.Authorization.PasswordType namespace.
 		 * @param password_type Password Type string
 		 */
-		protected IPasswordType? get_password_type_from_string( string password_type, string? namespace = null ) {
+		protected IPasswordType? get_password_type_from_string ( string password_type, string? namespace = null ) {
 			if ( namespace == null ) {
 				namespace = "";
 			}
 			string glib_type = null;
 			if ( "." in password_type ) {
-				glib_type = password_type.replace( ".", "" );
+				glib_type = password_type.replace ( ".", "" );
 			} else {
- 				glib_type = "AmbitionAuthorizationPasswordType%s".printf(password_type);
+ 				glib_type = "AmbitionAuthorizationPasswordType%s".printf( password_type);
 			}
 			if ( App.password_types == null ) {
-				App.password_types = new HashMap<string,IPasswordType>();
+				App.password_types = new HashMap<string,IPasswordType> ();
 			}
-			if ( App.password_types.has_key(namespace + glib_type) ) {
+			if ( App.password_types.has_key (namespace + glib_type) ) {
 				return App.password_types[namespace + glib_type];
 			} else {
-				Type t = Type.from_name(glib_type);
+				Type t = Type.from_name (glib_type);
 				if ( t > 0 ) {
-					App.password_types[namespace + glib_type] = (IPasswordType) Object.new(t);
-					App.password_types[namespace + glib_type].init(config);
+					App.password_types[namespace + glib_type] = (IPasswordType) Object.new (t);
+					App.password_types[namespace + glib_type].init (config);
 					return App.password_types[namespace + glib_type];
 				}
 			}
@@ -84,15 +84,15 @@ namespace Ambition.Authorization {
 		/**
 		 * Get an instance of the current authorizer's password type.
 		 */
-		public abstract IPasswordType? get_password_type_instance();
+		public abstract IPasswordType? get_password_type_instance ();
 
 		/**
 		 * Get the name of the current authenticator.
 		 */
-		public string get_name() {
-			return this.get_type().name()
-						.replace( "AmbitionAuthorization", "" )
-						.replace( "Authorizer", "" );
+		public string get_name () {
+			return this.get_type ().name ()
+						.replace ( "AmbitionAuthorization", "" )
+						.replace ( "Authorizer", "" );
 		}
 	}
 }

@@ -26,7 +26,7 @@ namespace Ambition.CoreView {
 	 * Returns a file.
 	 */
 	public class File : Result {
-		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger("Ambition.CoreView.File");
+		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.CoreView.File");
 
 		public override State state { get; set; }
 		public override int64 size { get; set; }
@@ -39,19 +39,19 @@ namespace Ambition.CoreView {
 		 * @param file File object.
 		 * @param content_type Optional MIME content type.
 		 */
-		public File( GLib.File file, string? content_type = null ) {
+		public File ( GLib.File file, string? content_type = null ) {
 			this.file = file;
 			this.content_type = content_type;
 		}
 
-		public override InputStream? render() {
+		public override InputStream? render () {
 			try {
-				var file_info = file.query_info( "*", FileQueryInfoFlags.NONE );
-				state.response.content_type = ( content_type != null ? content_type : file_info.get_content_type() );
-				size = file_info.get_size();
-				return file.read();
+				var file_info = file.query_info ( "*", FileQueryInfoFlags.NONE );
+				state.response.content_type = ( content_type != null ? content_type : file_info.get_content_type () );
+				size = file_info.get_size ();
+				return file.read ();
 			} catch ( Error e ) {
-				logger.error( "Error accessing file", e );
+				logger.error ( "Error accessing file", e );
 				state.response.status = 500;
 				state.response.body = "";
 				return null;

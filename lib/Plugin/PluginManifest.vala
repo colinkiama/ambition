@@ -45,24 +45,24 @@ namespace Ambition.Plugin {
 		 * @param plugin_directory Existing plugin directory.
 		 * @return Instance of PluginManifest or null.
 		 */
-		public static PluginManifest? load_manifest( string plugin_directory ) {
-			var parser = new Json.Parser();
+		public static PluginManifest? load_manifest ( string plugin_directory ) {
+			var parser = new Json.Parser ();
 			try {
-				if ( parser.load_from_file( "%s/manifest.json".printf(plugin_directory) ) ) {
-					var manifest = (PluginManifest) Json.gobject_deserialize( typeof(PluginManifest), parser.get_root() );
+				if ( parser.load_from_file ( "%s/manifest.json".printf( plugin_directory) ) ) {
+					var manifest = (PluginManifest) Json.gobject_deserialize ( typeof (PluginManifest), parser.get_root () );
 					manifest.directory = plugin_directory;
 					return manifest;
 				}
 			} catch ( Error e ) {
-				Log4Vala.Logger.get_logger("Ambition.Plugin.PluginManifest").error( "Fatal: Unable to load manifest from '%s'".printf( plugin_directory ), e );
+				Log4Vala.Logger.get_logger ("Ambition.Plugin.PluginManifest").error(  "Fatal: Unable to load manifest from '%s'".printf(  plugin_directory ), e );
 			}
 			return null;
 		}
 
-		public bool check_version( string target_version ) {
-			int min_version = Ambition.parse_version(minimum_target_version);
-			int max_version = Ambition.parse_version(maximum_target_version);
-			int tar_version = Ambition.parse_version(target_version);
+		public bool check_version ( string target_version ) {
+			int min_version = Ambition.parse_version (minimum_target_version);
+			int max_version = Ambition.parse_version (maximum_target_version);
+			int tar_version = Ambition.parse_version (target_version);
 			return ( tar_version >= min_version && tar_version <= max_version );
 		}
 	}

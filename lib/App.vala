@@ -28,8 +28,8 @@ namespace Ambition {
 	/**
 	 * Retrieve framework version as an int.
 	 */
-	public static int int_version() {
-		return parse_version(VERSION);
+	public static int int_version () {
+		return parse_version (VERSION);
 	}
 
 	/**
@@ -39,7 +39,7 @@ namespace Ambition {
 	 * @param separator String to separate strings
 	 * @param list ArrayList of strings to join
 	 */
-	public string arraylist_joinv( string separator, ArrayList<string> list ) {
+	public string arraylist_joinv ( string separator, ArrayList<string> list ) {
 		if ( list == null || list.size == 0 ) {
 			return "";
 		}
@@ -52,19 +52,19 @@ namespace Ambition {
 			}
 			list_array[f_index++] = f;
 		}
-		return string.joinv( separator, list_array );
+		return string.joinv ( separator, list_array );
 	}
 
-	public int parse_version( string version ) {
-		string[] components = version.split(".");
+	public int parse_version ( string version ) {
+		string[] components = version.split (".");
 		if ( components.length == 2 ) {
 			components += "0";
 		}
 		string new_version = "1";
 		foreach ( var component in components ) {
-			new_version = new_version + "%02d".printf( int.parse(component) );
+			new_version = new_version + "%02d".printf(  int.parse( component) );
 		}
-		return int.parse(new_version);
+		return int.parse (new_version);
 	}
 
 	/**
@@ -89,7 +89,7 @@ namespace Ambition {
 		/**
 		 * Set the current log level from a string.
 		 */
-		public static void set_log_level( string log_level ) {
+		public static void set_log_level ( string log_level ) {
 			switch (log_level) {
 				case "debug":
 					App.log_level = 0;

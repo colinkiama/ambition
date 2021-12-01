@@ -34,7 +34,7 @@ namespace Ambition {
 		/**
 		 * Provides all cookies set for this request.
 		 */
-		public HashMap<string,Cookie> cookies { get; set; default = new HashMap<string,Cookie>(); }
+		public HashMap<string,Cookie> cookies { get; set; default = new HashMap<string,Cookie> (); }
 
 		/**
 		 * All query and body parameters for this request.
@@ -70,18 +70,18 @@ namespace Ambition {
 		 * Base URI/URL.
 		 */
 		public string base_uri {
-			get { 
+			get {
 				string port_addon = "";
 				if (
-					! host.contains(":")
+					! host.contains (":")
 					&& (
 						( protocol == "http" && port != 80 )
 						|| ( protocol == "https" && port != 443 )
 					)
 				) {
-					port_addon = ":%d".printf(port);
+					port_addon = ":%d".printf( port);
 				}
-				_base_uri = "%s://%s%s".printf( protocol, host, port_addon );
+				_base_uri = "%s://%s%s".printf(  protocol, host, port_addon );
 				return _base_uri;
 			}
 		}
@@ -125,12 +125,12 @@ namespace Ambition {
 		 */
 		public string[] captures { get; set; default = {}; }
 
-		public HashMap<string,RequestFile> files { get; set; default = new HashMap<string,RequestFile>(); }
+		public HashMap<string,RequestFile> files { get; set; default = new HashMap<string,RequestFile> (); }
 
 		/**
 		 * Retrieve named captures, if requested.
 		 */
-		public HashMap<string,string> named_captures { get; set; default = new HashMap<string,string>(); }
+		public HashMap<string,string> named_captures { get; set; default = new HashMap<string,string> (); }
 
 		public string _arguments {
 			get {
@@ -138,57 +138,57 @@ namespace Ambition {
 			}
 			set {
 				__arguments = value;
-				if ( __arguments.has_prefix("/") ) {
-					__arguments = __arguments.substring(1);
+				if ( __arguments.has_prefix ("/") ) {
+					__arguments = __arguments.substring (1);
 				}
-				if ( __arguments.has_suffix("/") ) {
-					__arguments = __arguments.substring( 0, __arguments.length - 1 );
+				if ( __arguments.has_suffix ("/") ) {
+					__arguments = __arguments.substring ( 0, __arguments.length - 1 );
 				}
 			}
 		}
 
-		~Request() {
+		~Request () {
 			if ( files.size > 0 ) {
 				bool keep_files = false;
-				if ( Config.get_instance().config_hash.size > 0 ) {
-					keep_files = Config.lookup_bool("app.keep_files");
+				if ( Config.get_instance ().config_hash.size > 0 ) {
+					keep_files = Config.lookup_bool ("app.keep_files");
 				}
 				foreach ( var file in files.keys ) {
 					if ( !keep_files ) {
-						files[file].file.@delete();
+						files[file].file.@delete ();
 					}
 				}
 			}
 		}
-		
+
 		/**
 		 * Used primarily by engines, converts a query string to a HashMap
 		 * suitable for storage as parameters.
 		 */
-		public static HashMap<string,string> params_from_string( string query ) {
-			var h = new HashMap<string,string>();
+		public static HashMap<string,string> params_from_string ( string query ) {
+			var h = new HashMap<string,string> ();
 			// Turn semi-colons into ampersands before splitting
-			foreach ( string s in query.replace( ";", "&" ).split("&") ) {
-				int eq = s.index_of("=");
+			foreach ( string s in query.replace(  ";", "&" ).split( "&") ) {
+				int eq = s.index_of ("=");
 				if ( eq > 0 ) {
-					string k = Uri.unescape_string( s.substring( 0, eq ) );
-					string v = Uri.unescape_string( s.substring(eq + 1).replace( "+", " " ) );
-					if ( h.has_key(k) ) {
-						h[k] = string.join( ",", h[k], v );
+					string k = Uri.unescape_string ( s.substring ( 0, eq ) );
+					string v = Uri.unescape_string ( s.substring (eq + 1).replace ( "+", " " ) );
+					if ( h.has_key (k) ) {
+						h[k] = string.join ( ",", h[k], v );
 					} else {
 						h[k] = v;
 					}
 				} else {
-					string k = Uri.unescape_string(s);
+					string k = Uri.unescape_string (s);
 					string v = "";
-					if ( ! h.has_key(k) ) {
+					if ( ! h.has_key (k) ) {
 						h[k] = v;
 					}
 				}
 			}
 			return h;
 		}
-		
+
 		/**
 		 * Set the URI given the components of a URL.
 		 * @param protocol HTTP protocol
@@ -196,13 +196,13 @@ namespace Ambition {
 		 * @param raw_path Path of the URL
 		 * @param clean_path Entity-stripped path
 		 */
-		public void set_uri( string protocol, string host, string raw_path, string clean_path ) {
-			_uri = "%s://%s%s".printf(protocol, host, raw_path);
+		public void set_uri ( string protocol, string host, string raw_path, string clean_path ) {
+			_uri = "%s://%s%s".printf( protocol, host, raw_path);
 			this.protocol = protocol;
 			this.host = host;
-			var colon = host.index_of(":");
+			var colon = host.index_of (":");
 			if (colon != -1) {
-				this.port = int.parse( host[ colon + 1 : host.length ] );
+				this.port = int.parse ( host[ colon + 1 : host.length ] );
 			} else {
 				if ( this.protocol == "https" ) {
 					this.port = 443;
@@ -213,13 +213,13 @@ namespace Ambition {
 			this.path = clean_path;
 		}
 
-		public void initialize(
-				HttpMethod method, string ip, string protocol, 
-				string host, string raw_path, string clean_path, 
+		public void initialize (
+				HttpMethod method, string ip, string protocol,
+				string host, string raw_path, string clean_path,
 				HashMap<string,string> params, HashMap<string,string> headers,
 				string? content_type = null
 			) {
-			set_uri( protocol, host, raw_path, clean_path );
+			set_uri ( protocol, host, raw_path, clean_path );
 			this.method  = method;
 			this.ip      = ip;
 			this.params  = params;
@@ -230,23 +230,23 @@ namespace Ambition {
 		/**
 		 * Retrieve a request parameter by name, null if unavailable.
 		 */
-		public string? param( string key ) {
-			return params.get(key);
+		public string? param ( string key ) {
+			return params.get (key);
 		}
 
 		/**
 		 * Retrieve a request header by name, null if unavailable.
 		 */
-		public string? header( string key ) {
-			return headers.get(key);
+		public string? header ( string key ) {
+			return headers.get (key);
 		}
 
 		/**
 		 * Retrieve the list of URL arguments, if supported by dispatch type.
 		 */
-		public string[]? arguments() {
+		public string[]? arguments () {
 			if ( this._arguments != null ) {
-				return this._arguments.split("/");
+				return this._arguments.split ("/");
 			}
 			return null;
 		}
@@ -254,29 +254,29 @@ namespace Ambition {
 		/**
 		 * Retrieve a URL capture by name, null if unavailable.
 		 */
-		public string? get_capture( string capture_name ) {
+		public string? get_capture ( string capture_name ) {
 			return this.named_captures[capture_name];
 		}
 
 		/**
 		 * Retrieve a URL capture by index, null if unavailable.
 		 */
-		public string? get_capture_index( int capture_index ) {
+		public string? get_capture_index ( int capture_index ) {
 			return this.captures[capture_index];
 		}
 
 		/**
 		 * Retrieve a request cookie by name, null if unavailable.
 		 */
-		public Cookie? get_cookie( string name ) {
-			return cookies.get(name);
+		public Cookie? get_cookie ( string name ) {
+			return cookies.get (name);
 		}
 
 		/**
 		 * Add a cookie to the list of request cookies.
 		 */
-		public void set_cookie( Cookie cookie ) {
-			cookies.set( cookie.name, cookie );
+		public void set_cookie ( Cookie cookie ) {
+			cookies.set ( cookie.name, cookie );
 		}
 
 	}
