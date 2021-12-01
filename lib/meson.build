@@ -102,7 +102,7 @@ libambition = shared_library(
     lib_sources,
     vala_header: meson.project_name() + '.h',
     vala_vapi: lib_name + '.vapi',
-    vala_gir: lib_name + 'gir',
+    vala_gir: lib_name + '.gir',
     dependencies: lib_deps,
     vala_args: [
         '--abi-stability'

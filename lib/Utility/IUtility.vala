@@ -28,23 +28,23 @@ namespace Ambition.Utility {
 		/**
 		 * Name of the plugin.
 		 */
-		public abstract string name { get { return "Invalid"; } }
+		public abstract string name { get; }
 
 		/**
 		 * Method called when a plugin is first created, to allow a plugin
 		 * to initialize any default values or instantiate other components.
 		 */
-		public abstract void register_utility();
+		public abstract void register_utility ();
 
 		/**
 		 * Method that receives a command and arguments. Return an exit code.
 		 * @param args Command and arguments
 		 */
-		public abstract int receive_command( string[] args );
+		public abstract int receive_command ( string[] args );
 
 		/**
 		 * Returns a string containing help text. Be sure to use wrap_string().
 		 */
-		public abstract string help();
+		public abstract string help ();
 	}
 }

@@ -28,7 +28,7 @@ namespace Ambition.PluginSupport {
 		/**
 		 * Name of the plugin.
 		 */
-		public abstract string name { get { return "Invalid"; } }
+		public abstract string name { get; }
 
 		/**
 		 * Method called before instantiation, to determine the type of the
@@ -40,35 +40,35 @@ namespace Ambition.PluginSupport {
 		 * Method called when a plugin is first created, to allow a plugin
 		 * to initialize any default values or instantiate other components.
 		 */
-		public abstract void register_plugin();
+		public abstract void register_plugin ();
 
 		/**
 		 * Hook method called when application first starts. This method will
 		 * only run once.
 		 */
-		public virtual void on_application_start( Dispatcher dispatcher ) {}
+		public virtual void on_application_start ( Dispatcher dispatcher ) {}
 
 		/**
 		 * Hook method called after the engine receives a request, but before a
 		 * request is run through through the dispatcher.
 		 */
-		public virtual void on_request_dispatch( State state ) {}
+		public virtual void on_request_dispatch ( State state ) {}
 
 		/**
 		 * Hook method called after the dispatcher has received a request, but
 		 * before the response is sent from the engine.
 		 */
-		public virtual void on_request_render( State state ) {}
+		public virtual void on_request_render ( State state ) {}
 
 		/**
 		 * Hook method called at the end of a request, after the response has
 		 * been rendered.
 		 */
-		public virtual void on_request_end( State state ) {}
+		public virtual void on_request_end ( State state ) {}
 
 		/**
 		 * Hook method called when application exits gracefully.
 		 */
-		public virtual void on_application_end( Dispatcher dispatcher ) {}
+		public virtual void on_application_end ( Dispatcher dispatcher ) {}
 	}
 }
