@@ -5,7 +5,8 @@ sources = files (
 
 bin_deps = [
     dependency('readline'),
-    posix_dep
+    posix_dep,
+    libambition_dep
 ]
 
 vala_lint = executable (
