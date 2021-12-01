@@ -142,26 +142,32 @@ pkgconfig.generate(
     description: 'Ambition Web Framework for Vala and/or GObject.'
 )
 
-if get_option('enable_valadoc')
-    valadoc = find_program('valadoc')
-    libambition_docs = custom_target(
-        lib_name + '_apidocs',
-        input: lib_sources,
-        install: true,
-        install_dir: get_option('datadir') / 'devhelp' / 'books',
-        command: [
-            valadoc,
-            '-o', meson.current_build_dir() / lib_name,
-            '--doclet',
-            'devhelp',
-            '@INPUT@',
-            '--force'
-        ],
-        output: lib_name
-    )
+# if get_option('enable_valadoc')
+#     valadoc = find_program('valadoc')
+#     libambition_docs = custom_target(
+#         lib_name + '_apidocs',
+#         input: lib_sources,
+#         install: true,
+#         install_dir: get_option('datadir') / 'devhelp' / 'books',
+#         command: [
+#             valadoc,
+#             '-o', meson.current_build_dir() / lib_name,
+#             '--doclet',
+#             'devhelp',
+#             '@INPUT@',
+#             '--force'
+#         ],
+#         output: lib_name
+#     )
 
-    install_subdir(
-        meson.current_build_dir() / lib_name / lib_name,
-        install_dir: get_option('datadir') / 'devhelp' / 'books'
-    )
-endif
+#     install_subdir(
+#         meson.current_build_dir() / lib_name / lib_name,
+#         install_dir: get_option('datadir') / 'devhelp' / 'books'
+#     )
+# endif
+
+libambition_dep = declare_dependency(
+    dependencies: lib_deps,
+    link_with : libambition,
+    include_directories: include_directories('.')
+)
