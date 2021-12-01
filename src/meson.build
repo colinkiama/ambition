@@ -16,5 +16,4 @@ vala_lint = executable (
         core_deps,
         bin_deps,
     ],
-    vala_args: '--thread'
 )
