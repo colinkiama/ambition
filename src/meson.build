@@ -9,11 +9,12 @@ bin_deps = [
     libambition_dep
 ]
 
-vala_lint = executable (
+ambition_bin = executable (
     meson.project_name(),
     sources,
     dependencies: [
         core_deps,
         bin_deps,
     ],
+    install: true
 )
