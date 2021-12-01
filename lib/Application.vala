@@ -20,56 +20,56 @@
  */
 
 namespace Ambition {
-	/**
-	 * Base class for an Application.
-	 */
-	public abstract class Application : Object {
-		public Dispatcher dispatcher;
+    /**
+     * Base class for an Application.
+     */
+    public abstract class Application : Object {
+        public Dispatcher dispatcher;
 
-		public abstract Actions get_actions ();
+        public abstract Actions get_actions ();
 
-		/**
-		 * Optional function, called from the entry point, to allow code to be
-		 * run on initial execution of the application. Does nothing by default.
-		 * @param args Command line arguments
-		 */
-		public virtual bool init ( string[] args ) {
-			return true;
-		}
+        /**
+         * Optional function, called from the entry point, to allow code to be
+         * run on initial execution of the application. Does nothing by default.
+         * @param args Command line arguments
+         */
+        public virtual bool init ( string[] args ) {
+            return true;
+        }
 
-		/**
-		 * Entry point for the web application, initialized with command line
-		 * arguments. In most cases, this should not be overridden, as init()
-		 * will be run from this method. However, this can be done as long as it
-		 * is called from the subclass.
-		 * @param args Command line arguments
-		 */
-		public virtual void run ( string[] args ) {
-			// Initialize the application's dispatcher
-			this.dispatcher = new Dispatcher(  this, args );
+        /**
+         * Entry point for the web application, initialized with command line
+         * arguments. In most cases, this should not be overridden, as init()
+         * will be run from this method. However, this can be done as long as it
+         * is called from the subclass.
+         * @param args Command line arguments
+         */
+        public virtual void run ( string[] args ) {
+            // Initialize the application's dispatcher
+            this.dispatcher = new Dispatcher(  this, args );
 
-			// Import actions
-			dispatcher.add_actions_class(  get_actions( ) );
+            // Import actions
+            dispatcher.add_actions_class(  get_actions( ) );
 
-			// Run local init
-			if ( !init( args) ) {
-				return;
-			}
+            // Run local init
+            if ( !init( args) ) {
+                return;
+            }
 
-			// Start the application
-			dispatcher.run( );
-		}
+            // Start the application
+            dispatcher.run( );
+        }
 
-		/**
-		 * Block of code to run when a request is initially dispatched.
-		 * @param state State
-		 */
-		public virtual void on_request_dispatch ( State state ) {}
+        /**
+         * Block of code to run when a request is initially dispatched.
+         * @param state State
+         */
+        public virtual void on_request_dispatch ( State state ) {}
 
-		/**
-		 * Block of code tor un when a request is completed.
-		 * @param state State
-		 */
-		public virtual void on_request_end ( State state ) {}
-	}
+        /**
+         * Block of code tor un when a request is completed.
+         * @param state State
+         */
+        public virtual void on_request_end ( State state ) {}
+    }
 }

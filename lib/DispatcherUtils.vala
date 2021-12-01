@@ -20,28 +20,28 @@
  */
 
 namespace Ambition {
-	public class DispatcherUtils : Object {
-		public static string find_controller_for_path ( string path ) {
-			return path.substring ( 0, path.last_index_of ("/") );
-		}
+    public class DispatcherUtils : Object {
+        public static string find_controller_for_path ( string path ) {
+            return path.substring ( 0, path.last_index_of ("/") );
+        }
 
-		public static string? controller_to_path ( string controller, string? method = null ) {
-			var sb = new StringBuilder ();
-			try {
-				Regex re_convert = new Regex ("([a-z])([A-Z])");
-				string filtered = controller.substring ( controller.index_of (".Controller.") + 12 );
-				filtered = re_convert.replace ( filtered, -1, 0, "\\1_\\2" ).down( );
-				sb.append ("/");
-				sb.append ( filtered.replace ( ".", "/" ) );
-				if ( method != null ) {
-					sb.append ("/");
-					sb.append (method);
-				}
-			} catch ( RegexError re ) {
-				stderr.printf ( re.message );
-				return null;
-			}
-			return sb.str;
-		}
-	}
+        public static string? controller_to_path ( string controller, string? method = null ) {
+            var sb = new StringBuilder ();
+            try {
+                Regex re_convert = new Regex ("([a-z])([A-Z])");
+                string filtered = controller.substring ( controller.index_of (".Controller.") + 12 );
+                filtered = re_convert.replace ( filtered, -1, 0, "\\1_\\2" ).down( );
+                sb.append ("/");
+                sb.append ( filtered.replace ( ".", "/" ) );
+                if ( method != null ) {
+                    sb.append ("/");
+                    sb.append (method);
+                }
+            } catch ( RegexError re ) {
+                stderr.printf ( re.message );
+                return null;
+            }
+            return sb.str;
+        }
+    }
 }

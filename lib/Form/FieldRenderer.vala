@@ -21,23 +21,23 @@
 
 using Gee;
 namespace Ambition.Form {
-	/**
-	 * Base class for a field renderer. Implements render() method.
-	 */
-	public abstract class FieldRenderer : Object,Tag {
-		/**
-		 * Renders the given field/property to HTML or just about anything else.
-		 * @param form_name Form name
-		 * @param field     Field/property name
-		 * @param value     Value of that field/property
-		 * @param nick      GObject "nick" of the property
-		 * @param blurb     GObject "blurb" of the property
-		 * @return string containing the content
-		 */
-		public abstract string render ( string form_name, string field, string? value = "", string? nick = null, string? blurb = null, string[]? errors = null );
+    /**
+     * Base class for a field renderer. Implements render() method.
+     */
+    public abstract class FieldRenderer : Object,Tag {
+        /**
+         * Renders the given field/property to HTML or just about anything else.
+         * @param form_name Form name
+         * @param field     Field/property name
+         * @param value     Value of that field/property
+         * @param nick      GObject "nick" of the property
+         * @param blurb     GObject "blurb" of the property
+         * @return string containing the content
+         */
+        public abstract string render ( string form_name, string field, string? value = "", string? nick = null, string? blurb = null, string[]? errors = null );
 
-		public string make_id ( string form_name, string field ) {
-			return form_name + "_" + field;
-		}
-	}
+        public string make_id ( string form_name, string field ) {
+            return form_name + "_" + field;
+        }
+    }
 }

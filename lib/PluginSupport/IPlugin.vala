@@ -21,54 +21,54 @@
 
 namespace Ambition.PluginSupport {
 
-	/**
-	 * Interface for defining a new Ambition plugin.
-	 */
-	public interface IPlugin : Object {
-		/**
-		 * Name of the plugin.
-		 */
-		public abstract string name { get; }
+    /**
+     * Interface for defining a new Ambition plugin.
+     */
+    public interface IPlugin : Object {
+        /**
+         * Name of the plugin.
+         */
+        public abstract string name { get; }
 
-		/**
-		 * Method called before instantiation, to determine the type of the
-		 * plugin.
-		 */
-		// public abstract static Type init_plugin();
+        /**
+         * Method called before instantiation, to determine the type of the
+         * plugin.
+         */
+        // public abstract static Type init_plugin();
 
-		/**
-		 * Method called when a plugin is first created, to allow a plugin
-		 * to initialize any default values or instantiate other components.
-		 */
-		public abstract void register_plugin ();
+        /**
+         * Method called when a plugin is first created, to allow a plugin
+         * to initialize any default values or instantiate other components.
+         */
+        public abstract void register_plugin ();
 
-		/**
-		 * Hook method called when application first starts. This method will
-		 * only run once.
-		 */
-		public virtual void on_application_start ( Dispatcher dispatcher ) {}
+        /**
+         * Hook method called when application first starts. This method will
+         * only run once.
+         */
+        public virtual void on_application_start ( Dispatcher dispatcher ) {}
 
-		/**
-		 * Hook method called after the engine receives a request, but before a
-		 * request is run through through the dispatcher.
-		 */
-		public virtual void on_request_dispatch ( State state ) {}
+        /**
+         * Hook method called after the engine receives a request, but before a
+         * request is run through through the dispatcher.
+         */
+        public virtual void on_request_dispatch ( State state ) {}
 
-		/**
-		 * Hook method called after the dispatcher has received a request, but
-		 * before the response is sent from the engine.
-		 */
-		public virtual void on_request_render ( State state ) {}
+        /**
+         * Hook method called after the dispatcher has received a request, but
+         * before the response is sent from the engine.
+         */
+        public virtual void on_request_render ( State state ) {}
 
-		/**
-		 * Hook method called at the end of a request, after the response has
-		 * been rendered.
-		 */
-		public virtual void on_request_end ( State state ) {}
+        /**
+         * Hook method called at the end of a request, after the response has
+         * been rendered.
+         */
+        public virtual void on_request_end ( State state ) {}
 
-		/**
-		 * Hook method called when application exits gracefully.
-		 */
-		public virtual void on_application_end ( Dispatcher dispatcher ) {}
-	}
+        /**
+         * Hook method called when application exits gracefully.
+         */
+        public virtual void on_application_end ( Dispatcher dispatcher ) {}
+    }
 }

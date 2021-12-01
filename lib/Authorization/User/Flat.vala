@@ -21,21 +21,21 @@
 
 using Gee;
 namespace Ambition.Authorization.User {
-	/**
-	 * Represents a user in a flat file.
-	 */
-	public class Flat : Object,IUser {
-		public string authorizer_name { get; set; default = "Flat"; }
-		public int id { get; set; default = 0; }
-		public string? username { get; set; }
+    /**
+     * Represents a user in a flat file.
+     */
+    public class Flat : Object,IUser {
+        public string authorizer_name { get; set; default = "Flat"; }
+        public int id { get; set; default = 0; }
+        public string? username { get; set; }
 
-		public Flat.with_params ( int id, string username ) {
-			this.id = id;
-			this.username = username;
-		}
+        public Flat.with_params ( int id, string username ) {
+            this.id = id;
+            this.username = username;
+        }
 
-		public Object? get_object () {
-			return null;
-		}
-	}
+        public Object? get_object () {
+            return null;
+        }
+    }
 }

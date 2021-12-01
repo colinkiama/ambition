@@ -21,24 +21,24 @@
 
 using Gee;
 namespace Ambition.Authorization {
-	/**
-	 * Interface for building a PasswordType.
-	 */
-	public interface IPasswordType : Object {
-		protected abstract HashMap<string,string> config { get; set; }
+    /**
+     * Interface for building a PasswordType.
+     */
+    public interface IPasswordType : Object {
+        protected abstract HashMap<string,string> config { get; set; }
 
-		/**
-		 * Initialize password type with config
-		 * @param config Configuration HashMap
-		 */
-		public abstract void init ( HashMap<string,string> config );
+        /**
+         * Initialize password type with config
+         * @param config Configuration HashMap
+         */
+        public abstract void init ( HashMap<string,string> config );
 
-		/**
-		 * Convert the given password value to the hashed, crypted, or other
-		 * type of converted value.
-		 * @param password_value Value to convert
-		 * @param options Optional HashMap<string,string> of additional params.
-		 */
-		public abstract string convert ( string password_value, HashMap<string,string>? options = null );
-	}
+        /**
+         * Convert the given password value to the hashed, crypted, or other
+         * type of converted value.
+         * @param password_value Value to convert
+         * @param options Optional HashMap<string,string> of additional params.
+         */
+        public abstract string convert ( string password_value, HashMap<string,string>? options = null );
+    }
 }

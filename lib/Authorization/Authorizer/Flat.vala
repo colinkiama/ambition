@@ -22,101 +22,101 @@
 using Gee;
 using Ambition.Authorization;
 namespace Ambition.Authorization.Authorizer {
-	/**
-	 * Authorize users using a flat file.
-	 */
-	public class Flat : Object,IAuthorizer {
-		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.ActionBuilder");
+    /**
+     * Authorize users using a flat file.
+     */
+    public class Flat : Object,IAuthorizer {
+        private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.ActionBuilder");
 
-		protected HashMap<string,string> config { get; set; }
-		private string file_path { get; set; }
-		private string delimiter { get; set; default = "|"; }
-		private string password_type { get; set; default = "SHA1"; }
+        protected HashMap<string,string> config { get; set; }
+        private string file_path { get; set; }
+        private string delimiter { get; set; default = "|"; }
+        private string password_type { get; set; default = "SHA1"; }
 
-		public void init ( HashMap<string,string> config ) {
-			this.config = config;
+        public void init ( HashMap<string,string> config ) {
+            this.config = config;
 
-			this.file_path = config.get ("file");
-			string delimiter = config.get ("delimiter");
-			if ( delimiter != null ) {
-				this.delimiter = delimiter;
-			}
-			string password_type = config.get ("password_type");
-			if ( password_type != null ) {
-				this.password_type = password_type;
-			}
-		}
+            this.file_path = config.get ("file");
+            string delimiter = config.get ("delimiter");
+            if ( delimiter != null ) {
+                this.delimiter = delimiter;
+            }
+            string password_type = config.get ("password_type");
+            if ( password_type != null ) {
+                this.password_type = password_type;
+            }
+        }
 
-		public IPasswordType? get_password_type_instance () {
-			return get_password_type_from_string (password_type);
-		}
+        public IPasswordType? get_password_type_instance () {
+            return get_password_type_from_string (password_type);
+        }
 
-		public IUser? authorize ( string username, string password, HashMap<string,string>? options = null ) {
-			var p_type = get_password_type_instance ();
-			var base_password = get_password_for_user (username);
-			if ( base_password != null ) {
-				if ( p_type.convert ( password, options ) == base_password ) {
-					return new User.Flat.with_params ( get_line_number_for_user (username), username );
-				}
-			}
-			return null;
-		}
+        public IUser? authorize ( string username, string password, HashMap<string,string>? options = null ) {
+            var p_type = get_password_type_instance ();
+            var base_password = get_password_for_user (username);
+            if ( base_password != null ) {
+                if ( p_type.convert ( password, options ) == base_password ) {
+                    return new User.Flat.with_params ( get_line_number_for_user (username), username );
+                }
+            }
+            return null;
+        }
 
-		public IUser? get_user_from_serialized ( string serialized ) {
-			var user = new User.Flat ();
-			user.deserialize (serialized);
-			if ( user.id > 0 ) {
-				return user;
-			}
-			return null;
-		}
+        public IUser? get_user_from_serialized ( string serialized ) {
+            var user = new User.Flat ();
+            user.deserialize (serialized);
+            if ( user.id > 0 ) {
+                return user;
+            }
+            return null;
+        }
 
-		private string? get_password_for_user ( string username ) {
-			var file = File.new_for_path (file_path);
-			if ( !file.query_exists () ) {
-				return null;
-			}
+        private string? get_password_for_user ( string username ) {
+            var file = File.new_for_path (file_path);
+            if ( !file.query_exists () ) {
+                return null;
+            }
 
-			try {
-				var input_stream = new DataInputStream ( file.read () );
-				string line;
-				while ( ( line = input_stream.read_line (null) ) != null ) {
-					if ( ! line.has_prefix ("#") ) {
-						string[] pair = line.split (delimiter);
-						if ( pair[0] == username ) {
-							return pair[1];
-						}
-					}
-				}
-			} catch ( Error e ) {
-				logger.error ( "Error reading file", e );
-			}
-			return null;
-		}
+            try {
+                var input_stream = new DataInputStream ( file.read () );
+                string line;
+                while ( ( line = input_stream.read_line (null) ) != null ) {
+                    if ( ! line.has_prefix ("#") ) {
+                        string[] pair = line.split (delimiter);
+                        if ( pair[0] == username ) {
+                            return pair[1];
+                        }
+                    }
+                }
+            } catch ( Error e ) {
+                logger.error ( "Error reading file", e );
+            }
+            return null;
+        }
 
-		private int get_line_number_for_user ( string username ) {
-			var file = File.new_for_path (file_path);
-			if ( !file.query_exists () ) {
-				return 0;
-			}
+        private int get_line_number_for_user ( string username ) {
+            var file = File.new_for_path (file_path);
+            if ( !file.query_exists () ) {
+                return 0;
+            }
 
-			try {
-				var input_stream = new DataInputStream ( file.read () );
-				string line;
-				int line_number = 0;
-				while ( ( line = input_stream.read_line (null) ) != null ) {
-					line_number++;
-					if ( ! line.has_prefix ("#") ) {
-						string[] pair = line.split (delimiter);
-						if ( pair[0] == username ) {
-							return line_number;
-						}
-					}
-				}
-			} catch ( Error e ) {
-				logger.error ( "Error reading file", e );
-			}
-			return 0;
-		}
-	}
+            try {
+                var input_stream = new DataInputStream ( file.read () );
+                string line;
+                int line_number = 0;
+                while ( ( line = input_stream.read_line (null) ) != null ) {
+                    line_number++;
+                    if ( ! line.has_prefix ("#") ) {
+                        string[] pair = line.split (delimiter);
+                        if ( pair[0] == username ) {
+                            return line_number;
+                        }
+                    }
+                }
+            } catch ( Error e ) {
+                logger.error ( "Error reading file", e );
+            }
+            return 0;
+        }
+    }
 }

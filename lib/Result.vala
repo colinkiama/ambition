@@ -20,23 +20,23 @@
  */
 
 namespace Ambition {
-	/**
-	 * Represents the result of a controller action.
-	 */
-	public abstract class Result : Object {
-		/**
-		 * The State of the current request.
-		 */
-		public abstract State state { get; set; }
+    /**
+     * Represents the result of a controller action.
+     */
+    public abstract class Result : Object {
+        /**
+         * The State of the current request.
+         */
+        public abstract State state { get; set; }
 
-		/**
-		 * The size of the input stream.
-		 */
-		public abstract int64 size { get; set; }
+        /**
+         * The size of the input stream.
+         */
+        public abstract int64 size { get; set; }
 
-		/**
-		 * Render the current view as an InputStream.
-		 */
-		public abstract InputStream? render ();
-	}
+        /**
+         * Render the current view as an InputStream.
+         */
+        public abstract InputStream? render ();
+    }
 }

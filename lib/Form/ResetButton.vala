@@ -21,12 +21,12 @@
 
 using Gee;
 namespace Ambition.Form {
-	/**
-	 * <button type="reset" />
-	 */
-	public class ResetButton : Button {
-		public ResetButton () {
-			this.input_type = "reset";
-		}
-	}
+    /**
+     * <button type="reset" />
+     */
+    public class ResetButton : Button {
+        public ResetButton () {
+            this.input_type = "reset";
+        }
+    }
 }

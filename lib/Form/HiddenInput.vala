@@ -21,18 +21,18 @@
 
 using Gee;
 namespace Ambition.Form {
-	/**
-	 * <input type="hidden" />
-	 */
-	public class HiddenInput : FieldRenderer {
-		public override string render ( string form_name, string field, string? value = "", string? nick = null, string? blurb = null, string[]? errors = null ) {
-			string id = make_id ( form_name, field );
-			var input_hm = new HashMap<string,string> ();
-			input_hm.set ( "type", "hidden" );
-			input_hm.set ( "id", id );
-			input_hm.set ( "name", field );
-			input_hm.set ( "value", value );
-			return input (input_hm);
-		}
-	}
+    /**
+     * <input type="hidden" />
+     */
+    public class HiddenInput : FieldRenderer {
+        public override string render ( string form_name, string field, string? value = "", string? nick = null, string? blurb = null, string[]? errors = null ) {
+            string id = make_id ( form_name, field );
+            var input_hm = new HashMap<string,string> ();
+            input_hm.set ( "type", "hidden" );
+            input_hm.set ( "id", id );
+            input_hm.set ( "name", field );
+            input_hm.set ( "value", value );
+            return input (input_hm);
+        }
+    }
 }

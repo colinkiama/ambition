@@ -21,13 +21,13 @@
 
 using Gee;
 namespace Ambition.Form {
-	/**
-	 * <input type="radio" />
-	 */
-	public class RadioGroupInput : GroupInput {
-		public RadioGroupInput.with_options ( string[] values, string[] labels ) {
-			base.with_options ( values, labels );
-			this.input_type = "radio";
-		}
-	}
+    /**
+     * <input type="radio" />
+     */
+    public class RadioGroupInput : GroupInput {
+        public RadioGroupInput.with_options ( string[] values, string[] labels ) {
+            base.with_options ( values, labels );
+            this.input_type = "radio";
+        }
+    }
 }

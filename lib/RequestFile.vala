@@ -21,38 +21,38 @@
 
 using Gee;
 namespace Ambition {
-	public class RequestFile : Object {
-		/**
-		 * File name, as reported by the request.
-		 */
-		public string filename { get; set; }
+    public class RequestFile : Object {
+        /**
+         * File name, as reported by the request.
+         */
+        public string filename { get; set; }
 
-		/**
-		 * Content type, as reported by the request.
-		 */
-		public string content_type { get; set; }
+        /**
+         * Content type, as reported by the request.
+         */
+        public string content_type { get; set; }
 
-		/**
-		 * File object pointing to the local temporary file with the contents
-		 * of this file.
-		 */
-		public File file { get; set; }
+        /**
+         * File object pointing to the local temporary file with the contents
+         * of this file.
+         */
+        public File file { get; set; }
 
-		/**
-		 * Default constructor.
-		 */
-		public RequestFile () {}
+        /**
+         * Default constructor.
+         */
+        public RequestFile () {}
 
-		/**
-		 * Construct RequestFile with contents of the object.
-		 * @param filename File name
-		 * @param content_type Content type
-		 * @param file Valid File object
-		 */
-		public RequestFile.with_contents ( string filename, string content_type, File file ) {
-			this.filename = filename;
-			this.content_type = content_type;
-			this.file = file;
-		}
-	}
+        /**
+         * Construct RequestFile with contents of the object.
+         * @param filename File name
+         * @param content_type Content type
+         * @param file Valid File object
+         */
+        public RequestFile.with_contents ( string filename, string content_type, File file ) {
+            this.filename = filename;
+            this.content_type = content_type;
+            this.file = file;
+        }
+    }
 }

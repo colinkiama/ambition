@@ -20,19 +20,19 @@
  */
 
 namespace Ambition {
-	/**
-	 * Base class for the auto-generated Actions class, derived from the
-	 * application's actions.conf.
-	 */
-	public class Actions : Object {
+    /**
+     * Base class for the auto-generated Actions class, derived from the
+     * application's actions.conf.
+     */
+    public class Actions : Object {
 
-		/**
-		 * Return an array of Action objects to add to the dispatcher.
-		 * Override this method.
-		 */
-		public virtual Action[] actions () {
-			return new Action[0];
-		}
+        /**
+         * Return an array of Action objects to add to the dispatcher.
+         * Override this method.
+         */
+        public virtual Action[] actions () {
+            return new Action[0];
+        }
 
-	}
+    }
 }

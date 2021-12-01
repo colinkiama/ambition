@@ -21,29 +21,29 @@
 
 using Gee;
 namespace Ambition.Form {
-	/**
-	 * <select />
-	 */
-	public class SelectGroupInput : GroupInput {
-		public SelectGroupInput.with_options ( string[] values, string[] labels ) {
-			base.with_options ( values, labels );
-		}
+    /**
+     * <select />
+     */
+    public class SelectGroupInput : GroupInput {
+        public SelectGroupInput.with_options ( string[] values, string[] labels ) {
+            base.with_options ( values, labels );
+        }
 
-		protected override string assemble_values ( string form_name, string field, string? value ) {
-			var sb = new StringBuilder ();
-			var hm = new HashMap<string,string> ();
-			hm.set ( "name", field );
-			hm.set ( "id", make_id(  form_name, field ) );
+        protected override string assemble_values ( string form_name, string field, string? value ) {
+            var sb = new StringBuilder ();
+            var hm = new HashMap<string,string> ();
+            hm.set ( "name", field );
+            hm.set ( "id", make_id(   form_name, field ) );
 
-			for ( int option_index = 0; option_index < values.length; option_index++ ) {
-				var input_hm = new HashMap<string,string> ();
-				input_hm.set ( "value", values[option_index] );
-				if ( value != null && values[option_index] == value ) {
-					input_hm.set ( "selected", "selected" );
-				}
-				sb.append ( option ( input_hm, labels[option_index] ) );
-			}
-			return select ( hm, sb.str );
-		}
-	}
+            for ( int option_index = 0; option_index < values.length; option_index++ ) {
+                var input_hm = new HashMap<string,string> ();
+                input_hm.set ( "value", values[option_index] );
+                if ( value != null && values[option_index] == value ) {
+                    input_hm.set ( "selected", "selected" );
+                }
+                sb.append ( option ( input_hm, labels[option_index] ) );
+            }
+            return select ( hm, sb.str );
+        }
+    }
 }

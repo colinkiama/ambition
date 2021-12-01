@@ -20,21 +20,21 @@
  */
 
 namespace Ambition.Authorization.PasswordType {
-	/**
-	 * SHA1 PasswordType, returning a 40 character hex string.
-	 * 
-	 * Application configuration can have two options:
-	 * 
-	 * * pre_salt: Added before the password value when being hashed.
-	 * * post_salt: Added after the password value when being hashed.
-	 * * iterations: Number of times to hash the resulting string.
-	 * 
-	 * The same options can be passed at the time of conversion, but they will
-	 * override application values, not added to them.
-	 */
-	public class SHA1 : Hashed {
-		protected override string hash ( string incoming ) {
-			return Checksum.compute_for_string ( ChecksumType.SHA1, incoming );
-		}
-	}
+    /**
+     * SHA1 PasswordType, returning a 40 character hex string.
+     * 
+     * Application configuration can have two options:
+     * 
+     * * pre_salt: Added before the password value when being hashed.
+     * * post_salt: Added after the password value when being hashed.
+     * * iterations: Number of times to hash the resulting string.
+     * 
+     * The same options can be passed at the time of conversion, but they will
+     * override application values, not added to them.
+     */
+    public class SHA1 : Hashed {
+        protected override string hash ( string incoming ) {
+            return Checksum.compute_for_string ( ChecksumType.SHA1, incoming );
+        }
+    }
 }

@@ -21,49 +21,49 @@
 
 using Gee;
 namespace Ambition.Authorization {
-	/**
-	 * Interface for building a user object from a given authorizer.
-	 */
-	public interface IUser : Object {
+    /**
+     * Interface for building a user object from a given authorizer.
+     */
+    public interface IUser : Object {
 
-		/**
-		 * Name/type of user object
-		 */
-		public abstract string authorizer_name { get; set; }
+        /**
+         * Name/type of user object
+         */
+        public abstract string authorizer_name { get; set; }
 
-		/**
-		 * Return ID for given user
-		 */
-		public abstract int id { get; set; default = 0; }
+        /**
+         * Return ID for given user
+         */
+        public abstract int id { get; set; default = 0; }
 
-		/**
-		 * Return ID for given user
-		 */
-		public abstract string? username { get; set; }
+        /**
+         * Return ID for given user
+         */
+        public abstract string? username { get; set; }
 
-		/**
-		 * If there is an associated object for this user, return it.
-		 */
-		public abstract Object? get_object ();
+        /**
+         * If there is an associated object for this user, return it.
+         */
+        public abstract Object? get_object ();
 
-		/**
-		 * Serialize current user object for loading later. The default
-		 * implementation handles the serialization of id and username.
-		 * @return Serialized string
-		 */
-		public string serialize () {
-			return "%d¬%s".printf(  id, username );
-		}
+        /**
+         * Serialize current user object for loading later. The default
+         * implementation handles the serialization of id and username.
+         * @return Serialized string
+         */
+        public string serialize () {
+            return "%d¬%s".printf(   id, username );
+        }
 
-		/**
-		 * Fix object from serialized data. The default implementation handles
-		 * deserialization of id and username.
-		 * @param serialized Serialized data
-		 */
-		public void deserialize ( string serialized ) {
-			string id = serialized.substring ( 0, serialized.index_of ("¬") );
-			this.id = int.parse (id);
-			this.username = serialized.substring ( serialized.index_of ("¬") + 2 );
-		}
-	}
+        /**
+         * Fix object from serialized data. The default implementation handles
+         * deserialization of id and username.
+         * @param serialized Serialized data
+         */
+        public void deserialize ( string serialized ) {
+            string id = serialized.substring ( 0, serialized.index_of ("¬") );
+            this.id = int.parse (id);
+            this.username = serialized.substring ( serialized.index_of ("¬") + 2 );
+        }
+    }
 }

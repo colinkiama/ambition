@@ -20,18 +20,18 @@
  */
 
 namespace Ambition.Plugin {
-	/**
-	 * Container for the result of a Plugin query.
-	 */
-	public class PluginResult : Object {
-		public string name { get; set; }
-		public string version { get; set; }
-		public string description { get; set; }
+    /**
+     * Container for the result of a Plugin query.
+     */
+    public class PluginResult : Object {
+        public string name { get; set; }
+        public string version { get; set; }
+        public string description { get; set; }
 
-		public PluginResult ( string name, string version, string description ) {
-			this.name = name;
-			this.version = version;
-			this.description = description;
-		}
-	}
+        public PluginResult ( string name, string version, string description ) {
+            this.name = name;
+            this.version = version;
+            this.description = description;
+        }
+    }
 }

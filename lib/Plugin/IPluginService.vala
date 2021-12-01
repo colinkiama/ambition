@@ -21,22 +21,22 @@
 
 using Gee;
 namespace Ambition.Plugin {
-	/**
-	 * Provides a plugin service.
-	 */
-	public interface IPluginService : Object {
-		public abstract HashMap<string,string> config { get; set; }
+    /**
+     * Provides a plugin service.
+     */
+    public interface IPluginService : Object {
+        public abstract HashMap<string,string> config { get; set; }
 
-		public abstract File? retrieve_plugin ( string plugin_name, string? version = null ) throws Error;
+        public abstract File? retrieve_plugin ( string plugin_name, string? version = null ) throws Error;
 
-		public abstract bool cleanup ( File retrieved_plugin );
+        public abstract bool cleanup ( File retrieved_plugin );
 
-		public abstract ArrayList<PluginResult> search_plugin ( string plugin_name ) throws Error;
+        public abstract ArrayList<PluginResult> search_plugin ( string plugin_name ) throws Error;
 
-		public abstract ArrayList<PluginResult> available_plugins () throws Error;
+        public abstract ArrayList<PluginResult> available_plugins () throws Error;
 
-		public abstract ArrayList<PluginResult> check_outdated_plugin ( HashMap<string,string> installed_plugins );
+        public abstract ArrayList<PluginResult> check_outdated_plugin ( HashMap<string,string> installed_plugins );
 
-		public abstract PluginManifest? get_manifest ( string plugin_name );
-	}
+        public abstract PluginManifest? get_manifest ( string plugin_name );
+    }
 }

@@ -21,21 +21,21 @@
 
 using Gee;
 namespace Ambition.Authorization.User {
-	/**
-	 * Represents a user in a htpasswd file.
-	 */
-	public class Htpasswd : Object,IUser {
-		public string authorizer_name { get; set; default = "Htpasswd"; }
-		public int id { get; set; default = 0; }
-		public string? username { get; set; }
+    /**
+     * Represents a user in a htpasswd file.
+     */
+    public class Htpasswd : Object,IUser {
+        public string authorizer_name { get; set; default = "Htpasswd"; }
+        public int id { get; set; default = 0; }
+        public string? username { get; set; }
 
-		public Htpasswd.with_params ( int id, string username ) {
-			this.id = id;
-			this.username = username;
-		}
+        public Htpasswd.with_params ( int id, string username ) {
+            this.id = id;
+            this.username = username;
+        }
 
-		public Object? get_object () {
-			return null;
-		}
-	}
+        public Object? get_object () {
+            return null;
+        }
+    }
 }

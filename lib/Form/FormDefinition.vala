@@ -21,209 +21,209 @@
 
 using Gee;
 namespace Ambition.Form {
-	/**
-	 * Representation of a HTML form, providing form validation, auto-fill,
-	 * and rendering.
-	 */
-	public abstract class FormDefinition : Object {
-		private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.Form.FormDefinition");
+    /**
+     * Representation of a HTML form, providing form validation, auto-fill,
+     * and rendering.
+     */
+    public abstract class FormDefinition : Object {
+        private Log4Vala.Logger logger = Log4Vala.Logger.get_logger ("Ambition.Form.FormDefinition");
 
-		public Request request { get; set; }
-		public string form_name { get; set; default = ""; }
-		public ArrayList<string> form_errors = new ArrayList<string> ();
-		public HashMap<string,ArrayList<string>> field_errors = new HashMap<string,ArrayList<string>> ();
+        public Request request { get; set; }
+        public string form_name { get; set; default = ""; }
+        public ArrayList<string> form_errors = new ArrayList<string> ();
+        public HashMap<string,ArrayList<string>> field_errors = new HashMap<string,ArrayList<string>> ();
 
-		/**
-		 * Bind the form with a valid State object
-		 * @param state State object
-		 */
-		public virtual void bind_state ( State state ) {
-			this.bind_request ( state.request );
-		}
+        /**
+         * Bind the form with a valid State object
+         * @param state State object
+         */
+        public virtual void bind_state ( State state ) {
+            this.bind_request ( state.request );
+        }
 
-		/**
-		 * Bind the form with a valid Request object
-		 * @param request Request object
-		 */
-		public virtual void bind_request ( Request request ) {
-			this.request = request;
-			do_property_bind ();
-		}
+        /**
+         * Bind the form with a valid Request object
+         * @param request Request object
+         */
+        public virtual void bind_request ( Request request ) {
+            this.request = request;
+            do_property_bind ();
+        }
 
-		/**
-		 * Run validation on the given form. Returns true if validation passed,
-		 * false if it did not. Check errors for results of errors.
-		 * @return boolean
-		 */
-		public bool is_valid () {
-			return ( this.validate_form () && !this.has_errors () );
-		}
+        /**
+         * Run validation on the given form. Returns true if validation passed,
+         * false if it did not. Check errors for results of errors.
+         * @return boolean
+         */
+        public bool is_valid () {
+            return ( this.validate_form () && !this.has_errors () );
+        }
 
-		/**
-		 * Returns true if any form or field errors have occurred during
-		 * validation.
-		 * @return boolean
-		 */
-		public bool has_errors () {
-			if ( this.form_errors.size > 0 || this.field_errors.size > 0 ) {
-				return true;
-			}
-			return false;
-		}
+        /**
+         * Returns true if any form or field errors have occurred during
+         * validation.
+         * @return boolean
+         */
+        public bool has_errors () {
+            if ( this.form_errors.size > 0 || this.field_errors.size > 0 ) {
+                return true;
+            }
+            return false;
+        }
 
-		/**
-		 * Add an error that is not specific to a field.
-		 * @param error_string Error text
-		 */
-		public void add_form_error ( string error_string ) {
-			this.form_errors.add (error_string);
-		}
+        /**
+         * Add an error that is not specific to a field.
+         * @param error_string Error text
+         */
+        public void add_form_error ( string error_string ) {
+            this.form_errors.add (error_string);
+        }
 
-		/**
-		 * Add an error that is specific to a field.
-		 * @param field        Name of the field/property 
-		 * @param error_string Error text
-		 */
-		public void add_field_error ( string field, string error_string ) {
-			if ( !this.field_errors.has_key (field) ) {
-				this.field_errors.set ( field, new ArrayList<string> () );
-			}
-			this.field_errors.get (field).add (error_string);
-		}
+        /**
+         * Add an error that is specific to a field.
+         * @param field        Name of the field/property 
+         * @param error_string Error text
+         */
+        public void add_field_error ( string field, string error_string ) {
+            if ( !this.field_errors.has_key (field) ) {
+                this.field_errors.set ( field, new ArrayList<string> () );
+            }
+            this.field_errors.get (field).add (error_string);
+        }
 
-		/**
-		 * Retrieve all form errors
-		 * @return ArrayList<string> of errors
-		 */
-		public ArrayList<string> get_form_errors () {
-			return this.form_errors;
-		}
+        /**
+         * Retrieve all form errors
+         * @return ArrayList<string> of errors
+         */
+        public ArrayList<string> get_form_errors () {
+            return this.form_errors;
+        }
 
-		/**
-		 * Retrieve errors for a given field
-		 * @param field Field/property name
-		 * @return ArrayList<string> of errors
-		 */
-		public ArrayList<string> get_field_errors ( string field ) {
-			if ( this.field_errors.has_key (field) ) {
-				return this.field_errors.get (field);
-			}
-			return new ArrayList<string> ();
-		}
+        /**
+         * Retrieve errors for a given field
+         * @param field Field/property name
+         * @return ArrayList<string> of errors
+         */
+        public ArrayList<string> get_field_errors ( string field ) {
+            if ( this.field_errors.has_key (field) ) {
+                return this.field_errors.get (field);
+            }
+            return new ArrayList<string> ();
+        }
 
-		/**
-		 * Render a given field/property with the given field renderer.
-		 * @param field    Field/property name
-		 * @param renderer A Ambition.Form.FieldRenderer object
-		 * @return string containing the rendered content
-		 */
-		public string render_field ( string field, FieldRenderer renderer ) {
-			string gfield = field.replace ( "_", "-" );
-			ParamSpec p = this.get_class ().find_property (gfield);
-			if ( p != null ) {
-				string converted_value = "";
-				Value v = Value ( p.value_type );
-				this.get_property ( field, ref v );
-				switch ( p.value_type.name () ) {
-					case "gchararray":  // string
-						converted_value = v.get_string( );
-						break;
-					case "gint": // int
-						converted_value = v.get_int( ).to_string( );
-						break;
-					case "gdouble": // double
-						converted_value = v.get_double( ).to_string( );
-						break;
-					case "gchar": // char
-						converted_value = v.get_char( ).to_string( );
-						break;
-					case "gboolean": // bool
-						converted_value = v.get_boolean( ).to_string( );
-						break;
-					case "GStrv": // string[]
-						string[] arrayed = (string[]) v.get_boxed( );
-						if ( arrayed != null ) {
-							converted_value = string.joinv ( ",", arrayed );
-						}
-						break;
-				}
+        /**
+         * Render a given field/property with the given field renderer.
+         * @param field    Field/property name
+         * @param renderer A Ambition.Form.FieldRenderer object
+         * @return string containing the rendered content
+         */
+        public string render_field ( string field, FieldRenderer renderer ) {
+            string gfield = field.replace ( "_", "-" );
+            ParamSpec p = this.get_class ().find_property (gfield);
+            if ( p != null ) {
+                string converted_value = "";
+                Value v = Value ( p.value_type );
+                this.get_property ( field, ref v );
+                switch ( p.value_type.name () ) {
+                    case "gchararray":  // string
+                        converted_value = v.get_string(  );
+                        break;
+                    case "gint": // int
+                        converted_value = v.get_int(  ).to_string(  );
+                        break;
+                    case "gdouble": // double
+                        converted_value = v.get_double(  ).to_string(  );
+                        break;
+                    case "gchar": // char
+                        converted_value = v.get_char(  ).to_string(  );
+                        break;
+                    case "gboolean": // bool
+                        converted_value = v.get_boolean(  ).to_string(  );
+                        break;
+                    case "GStrv": // string[]
+                        string[] arrayed = (string[]) v.get_boxed(  );
+                        if ( arrayed != null ) {
+                            converted_value = string.joinv ( ",", arrayed );
+                        }
+                        break;
+                }
 
-				/* The blurb is the property name by default, which is likely
-				 * not required by any field renderer separate from the field
-				 * name.
-				 */
-				string? blurb = p.get_blurb ();
-				if ( blurb != null && blurb == gfield ) {
-					blurb = null;
-				}
+                /* The blurb is the property name by default, which is likely
+                 * not required by any field renderer separate from the field
+                 * name.
+                 */
+                string? blurb = p.get_blurb ();
+                if ( blurb != null && blurb == gfield ) {
+                    blurb = null;
+                }
 
-				return renderer.render ( this.form_name, field, converted_value, p.get_nick (), blurb, get_field_errors (field).to_array () );
-			}
-			logger.error ( "Field not found: %s".printf( field) );
-			return "";
-		}
+                return renderer.render ( this.form_name, field, converted_value, p.get_nick (), blurb, get_field_errors (field).to_array () );
+            }
+            logger.error ( "Field not found: %s".printf(  field) );
+            return "";
+        }
 
-		/**
-		 * Perform custom form validation.
-		 *
-		 * This method returns true by default, and is designed to be
-		 * overridden by the subclass for any custom form-wide validation.
-		 * The success of this method is not dependent on field-level
-		 * validation.
-		 *
-		 * @return boolean on the success of validation /from this method/
-		 */
-		public virtual bool validate_form () {
-			return true;
-		}
+        /**
+         * Perform custom form validation.
+         *
+         * This method returns true by default, and is designed to be
+         * overridden by the subclass for any custom form-wide validation.
+         * The success of this method is not dependent on field-level
+         * validation.
+         *
+         * @return boolean on the success of validation /from this method/
+         */
+        public virtual bool validate_form () {
+            return true;
+        }
 
-		/*
-		 * Haaaaaaaaacks
-		 */
-		protected void do_property_bind () {
-			ParamSpec[] properties = this.get_class ().list_properties ();
-			foreach ( ParamSpec p in properties ) {
-				string param_name = p.name.replace ( "-", "_" );
-				if ( param_name != "request" && this.request.params.has_key(  param_name ) ) {
-					string param_value = this.request.param ( param_name );
-					Value v = Value ( p.value_type );
-					bool has_value = true;
-					switch ( p.value_type.name () ) {
-						case "gchararray":  // string
-							v.set_string( param_value);
-							break;
-						case "gint": // int
-							v.set_int(  int.parse( param_value) );
-							break;
-						case "gdouble": // double
-							v.set_double(  double.parse( param_value) );
-							break;
-						case "gchar": // char
-							v.set_char(  param_value[0] );
-							break;
-						case "gboolean": // bool
-							// Forms can be funny, let's make assumptions
-							if ( param_value == "1" || param_value == "on" ) {
-								param_value = "true";
-							} else if ( param_value == "0" || param_value == "off" ) {
-								param_value = "false";
-							}
-							v.set_boolean ( bool.parse (param_value) );
-							break;
-						case "GStrv": // string[]
-							string[] arrayed = param_value.split( ",");
-							v.set_boxed (arrayed);
-							break;
-						default:
-							has_value = false;
-							break;
-					}
-					if (has_value) {
-						this.set_property ( p.name, v );
-					}
-				}
-			}
-		}
+        /*
+         * Haaaaaaaaacks
+         */
+        protected void do_property_bind () {
+            ParamSpec[] properties = this.get_class ().list_properties ();
+            foreach ( ParamSpec p in properties ) {
+                string param_name = p.name.replace ( "-", "_" );
+                if ( param_name != "request" && this.request.params.has_key(   param_name ) ) {
+                    string param_value = this.request.param ( param_name );
+                    Value v = Value ( p.value_type );
+                    bool has_value = true;
+                    switch ( p.value_type.name () ) {
+                        case "gchararray":  // string
+                            v.set_string(  param_value);
+                            break;
+                        case "gint": // int
+                            v.set_int(   int.parse(  param_value) );
+                            break;
+                        case "gdouble": // double
+                            v.set_double(   double.parse(  param_value) );
+                            break;
+                        case "gchar": // char
+                            v.set_char(   param_value[0] );
+                            break;
+                        case "gboolean": // bool
+                            // Forms can be funny, let's make assumptions
+                            if ( param_value == "1" || param_value == "on" ) {
+                                param_value = "true";
+                            } else if ( param_value == "0" || param_value == "off" ) {
+                                param_value = "false";
+                            }
+                            v.set_boolean ( bool.parse (param_value) );
+                            break;
+                        case "GStrv": // string[]
+                            string[] arrayed = param_value.split(  ",");
+                            v.set_boxed (arrayed);
+                            break;
+                        default:
+                            has_value = false;
+                            break;
+                    }
+                    if (has_value) {
+                        this.set_property ( p.name, v );
+                    }
+                }
+            }
+        }
 
-	}
+    }
 }

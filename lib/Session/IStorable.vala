@@ -22,25 +22,25 @@
 using Gee;
 
 namespace Ambition.Session {
-	/**
-	 * Interface for any class implementing a session store. To use, subclass
-	 * Object and then Storable, and implement store, retrieve, and set_config.
-	 * While using the provided config is optional, the method is required to
-	 * be implemented so other Storables can use it.
-	 */
-	public interface IStorable : Object {
+    /**
+     * Interface for any class implementing a session store. To use, subclass
+     * Object and then Storable, and implement store, retrieve, and set_config.
+     * While using the provided config is optional, the method is required to
+     * be implemented so other Storables can use it.
+     */
+    public interface IStorable : Object {
 
-		/**
-		 * Store session data using a given session ID.
-		 * @param session_id Generated or passed session ID
-		 * @param i Session.Interface instance
-		 */
-		public abstract void store ( string session_id, Interface i );
+        /**
+         * Store session data using a given session ID.
+         * @param session_id Generated or passed session ID
+         * @param i Session.Interface instance
+         */
+        public abstract void store ( string session_id, Interface i );
 
-		/**
-		 * Retrieve session data using a given session ID.
-		 * @param session_id Generated or passed session ID
-		 */
-		public abstract Interface? retrieve ( string session_id );
-	}
+        /**
+         * Retrieve session data using a given session ID.
+         * @param session_id Generated or passed session ID
+         */
+        public abstract Interface? retrieve ( string session_id );
+    }
 }

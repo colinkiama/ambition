@@ -22,33 +22,33 @@
 using Ambition;
 
 namespace Ambition.CoreView {
-	/**
-	 * Returns a string. The default content type is text/html.
-	 */
-	public class RawString : Result {
-		public override State state { get; set; }
-		public override int64 size { get; set; }
+    /**
+     * Returns a string. The default content type is text/html.
+     */
+    public class RawString : Result {
+        public override State state { get; set; }
+        public override int64 size { get; set; }
 
-		private string renderable { get; set; }
-		private int code { get; set; default = 200; }
+        private string renderable { get; set; }
+        private int code { get; set; default = 200; }
 
-		/**
-		 * Create a RawString view, with the provided string. A status code may
-		 * be provided, but defaults to a 200.
-		 * @param str String to return to the browser.
-		 * @param code Optional status code to provide to the browser.
-		 */
-		public RawString ( string str, int code = 0 ) {
-			this.renderable = str;
-			this.code = code;
-		}
+        /**
+         * Create a RawString view, with the provided string. A status code may
+         * be provided, but defaults to a 200.
+         * @param str String to return to the browser.
+         * @param code Optional status code to provide to the browser.
+         */
+        public RawString ( string str, int code = 0 ) {
+            this.renderable = str;
+            this.code = code;
+        }
 
-		public override InputStream? render () {
-			size = renderable.length;
-			if ( state.response.content_type == null ) {
-				state.response.content_type = "text/html";
-			}
-			return new MemoryInputStream.from_data ( renderable.data, GLib.g_free );
-		}
-	}
+        public override InputStream? render () {
+            size = renderable.length;
+            if ( state.response.content_type == null ) {
+                state.response.content_type = "text/html";
+            }
+            return new MemoryInputStream.from_data ( renderable.data, GLib.g_free );
+        }
+    }
 }

@@ -22,33 +22,33 @@
 using Ambition;
 
 namespace Ambition.CoreView {
-	/**
-	 * Returns a redirect to the browser.
-	 */
-	public class Redirect : Result {
-		public override State state { get; set; }
-		public override int64 size { get; set; }
-		private string url { get; set; }
-		private int code { get; set; }
+    /**
+     * Returns a redirect to the browser.
+     */
+    public class Redirect : Result {
+        public override State state { get; set; }
+        public override int64 size { get; set; }
+        private string url { get; set; }
+        private int code { get; set; }
 
-		/**
-		 * Create a Redirect view, to the URL provided. A status code may be
-		 * provided, but defaults to a 302.
-		 * @param url Full or partial URL to redirect to.
-		 * @param code Optional status code to provide to the browser.
-		 */
-		public Redirect ( string url, int code = 0 ) {
-			this.url = url;
-			this.code = code;
-		}
+        /**
+         * Create a Redirect view, to the URL provided. A status code may be
+         * provided, but defaults to a 302.
+         * @param url Full or partial URL to redirect to.
+         * @param code Optional status code to provide to the browser.
+         */
+        public Redirect ( string url, int code = 0 ) {
+            this.url = url;
+            this.code = code;
+        }
 
-		public override InputStream? render () {
-			state.response.done ();
-			state.response.redirect (url);
-			if ( code > 0 ) {
-				state.response.status = code;
-			}
-			return null;
-		}
-	}
+        public override InputStream? render () {
+            state.response.done ();
+            state.response.redirect (url);
+            if ( code > 0 ) {
+                state.response.status = code;
+            }
+            return null;
+        }
+    }
 }

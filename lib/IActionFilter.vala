@@ -20,6 +20,6 @@
  */
 
 namespace Ambition {
-	public interface IActionFilter : Object {
-	}
+    public interface IActionFilter : Object {
+    }
 }

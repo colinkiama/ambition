@@ -78,9 +78,9 @@ namespace Ambition.PluginSupport {
          * @param filename Filename of module
          */
         public static IPlugin? load_plugin ( string directory_path, string filename ) {
-            Module module = Module.open ( "%s/%s".printf(   directory_path, filename), ModuleFlags.BIND_LOCAL );
+            Module module = Module.open ( "%s/%s".printf(    directory_path, filename), ModuleFlags.BIND_LOCAL );
             if ( module == null ) {
-                logger.error ( "Unable to load plugin '%s': %s. Skipping.".printf(   filename, Module.error(  ) ) );
+                logger.error ( "Unable to load plugin '%s': %s. Skipping.".printf(    filename, Module.error(   ) ) );
                 return null;
             }
             void* register_function;

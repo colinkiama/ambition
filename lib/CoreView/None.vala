@@ -22,15 +22,15 @@
 using Ambition;
 
 namespace Ambition.CoreView {
-	/**
-	 * Does nothing, assumes that response handling is done in the controller.
-	 */
-	public class None : Result {
-		public override State state { get; set; }
-		public override int64 size { get; set; }
+    /**
+     * Does nothing, assumes that response handling is done in the controller.
+     */
+    public class None : Result {
+        public override State state { get; set; }
+        public override int64 size { get; set; }
 
-		public override InputStream? render () {
-			return null;
-		}
-	}
+        public override InputStream? render () {
+            return null;
+        }
+    }
 }
