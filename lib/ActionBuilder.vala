@@ -225,7 +225,7 @@ using Ambition;
          * @param line Action line
          */
         public MatchInfo? is_valid_action_line ( string line ) {
-            var re_line = /^ (\/.*)\s+ (((CONNECT|DELETE|GET|HEAD|OPTIONS|POST|PUT|TRACE|ALL)(, ?)?)+)\s+ (.*)([\r\n])?$/;
+                        var re_line = /^(\/.*)\s+(((CONNECT|DELETE|GET|HEAD|OPTIONS|POST|PUT|TRACE|ALL)(, ?)?)+)\s+(.*)([\r\n])?$/; // vala-lint=space-before-paren, line-length
             MatchInfo info = null;
             if ( re_line.match ( line, 0, out info ) ) {
                 return info;
